@@ -17,8 +17,7 @@ Contenido:
 
 Lo que se espera para version 1:
 
-* Generación de comprobante XML.
-* Generación de comprobante PDF.
+* Generación de archivos XML.
 * Envío a hacienda.
 
 ## Documentación
@@ -35,6 +34,8 @@ Ver la [wiki](https://github.com/10quality/php-comprobante-electronico-costa-ric
 
 * Guia [Comprobante electrónico](http://www.hacienda.go.cr/docs/5a6f9e6abb19f_Guia%20Comprobantes%20Electronicos.pdf).
 * [Documentación oficial](http://www.hacienda.go.cr/contenido/14350-factura-electronica) del Hacienda.
+* [Documentación programación](https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.1/comprobantes-electronicos-api.html).
+* [Estructura XML](https://tribunet.hacienda.go.cr/FormatosYEstructurasXML.jsp)
 
 ## Licencia
 
