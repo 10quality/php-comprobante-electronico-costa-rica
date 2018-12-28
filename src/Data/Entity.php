@@ -4,6 +4,7 @@ namespace ComprobanteElectronico\Data;
 
 use Exception;
 use TenQuality\Data\Model;
+use ComprobanteElectronico\Enums\EntityType;
 
 /**
  * Holds an entity data.
@@ -16,27 +17,6 @@ use TenQuality\Data\Model;
  */
 class Entity extends Model
 {
-    /**
-     * Type that identifies an individual person.
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    const TYPE_INDIVIDUAL = '01';
-    /**
-     * Type that identifies a foreginer.
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    const TYPE_FOREIGNER = '02';
-    /**
-     * Type that identifies a business.
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    const TYPE_BUSINESS = '03';
     /**
      * Model properties.
      * @since 1.0.0
@@ -81,7 +61,7 @@ class Entity extends Model
             throw new Exception('Entity\'s type is missing.');
         if (strlen($this->id) > 12)
             throw new Exception('Entity\'s ID is greater than 12 digits.');
-        if (!in_array($this->type, [self::TYPE_INDIVIDUAL, self::TYPE_FOREIGNER, self::TYPE_BUSINESS]))
+        if (!EntityType::exists($this->type))
             throw new Exception(sprintf('Unknown entity type \'%s\'.', $this->type));
         return [
             'tipoIdentificacion'    => $this->type,

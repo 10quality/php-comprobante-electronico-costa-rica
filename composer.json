@@ -24,8 +24,8 @@
     },
     "require": {
         "php": ">=5.5",
-        "10quality/php-data-model": "^1.0",
-        "10quality/php-curl": "^1.0"
+        "10quality/php-data-model": "1.0.*",
+        "10quality/php-curl": "1.0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8"

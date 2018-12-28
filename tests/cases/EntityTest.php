@@ -1,6 +1,7 @@
 <?php
 
 use ComprobanteElectronico\Data\Entity;
+use ComprobanteElectronico\Enums\EntityType;
 
 /**
  * Test entity model.
@@ -18,9 +19,9 @@ class EntityTest extends PHPUnit_Framework_TestCase
      */
     public function testConstants()
     {
-        $this->assertEquals('01', Entity::TYPE_INDIVIDUAL);
-        $this->assertEquals('02', Entity::TYPE_FOREIGNER);
-        $this->assertEquals('03', Entity::TYPE_BUSINESS);
+        $this->assertEquals('01', EntityType::INDIVIDUAL);
+        $this->assertEquals('02', EntityType::FOREIGNER);
+        $this->assertEquals('03', EntityType::BUSINESS);
     }
     /**
      * Test entity properties.
@@ -31,7 +32,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
         // Prepare
         $entity = new Entity;
         $entity->id = 123456;
-        $entity->type = Entity::TYPE_INDIVIDUAL;
+        $entity->type = EntityType::INDIVIDUAL;
         // Assert
         $this->assertEquals('{"id":123456,"type":"01"}', (string)$entity);
     }
@@ -57,7 +58,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
         // Prepare
         $entity = new Entity;
         $entity->id = '1-1212-0030';
-        $entity->type = Entity::TYPE_INDIVIDUAL;
+        $entity->type = EntityType::INDIVIDUAL;
         // Execute
         $reception = $entity->toReceptionArray();
         // Assert
@@ -109,7 +110,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
         // Prepare
         $entity = new Entity;
         $entity->id = '14-121502-00304';
-        $entity->type = Entity::TYPE_INDIVIDUAL;
+        $entity->type = EntityType::INDIVIDUAL;
         // Execute
         $reception = $entity->toReceptionArray();
     }

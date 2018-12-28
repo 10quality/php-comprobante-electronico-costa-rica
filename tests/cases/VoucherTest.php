@@ -2,6 +2,7 @@
 
 use ComprobanteElectronico\Data\Entity;
 use ComprobanteElectronico\Data\Voucher;
+use ComprobanteElectronico\Enums\EntityType;
 
 /**
  * Test voucher model.
@@ -37,7 +38,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         $voucher = new Voucher;
         $entity = new Entity;
         $entity->id = '1-1212-0030';
-        $entity->type = Entity::TYPE_INDIVIDUAL;
+        $entity->type = EntityType::INDIVIDUAL;
         // Execute
         $voucher->addEntity('issuer', $entity);
         // Assert
@@ -54,7 +55,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         // Prepare
         $voucher = new Voucher;
         // Execute
-        $voucher->addEntity('issuer', Entity::TYPE_INDIVIDUAL, '1-1212-0030');
+        $voucher->addEntity('issuer', EntityType::INDIVIDUAL, '1-1212-0030');
         // Assert
         $this->assertEquals(112120030, $voucher->issuer->id);
         $this->assertEquals('01', $voucher->issuer->type);
@@ -72,7 +73,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         $voucher = new Voucher;
         $entity = new stdClass;
         $entity->id = '1-1212-0030';
-        $entity->type = Entity::TYPE_INDIVIDUAL;
+        $entity->type = EntityType::INDIVIDUAL;
         // Execute
         $voucher->addEntity('issuer', $entity);
     }
@@ -102,7 +103,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         // Prepare
         $voucher = new Voucher;
         // Execute
-        $voucher->addEntity('issuer', Entity::TYPE_INDIVIDUAL);
+        $voucher->addEntity('issuer', EntityType::INDIVIDUAL);
     }
     /**
      * Test addEntity method exception.
@@ -116,7 +117,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         // Prepare
         $voucher = new Voucher;
         // Execute
-        $voucher->addEntity('issuer', Entity::TYPE_INDIVIDUAL, '');
+        $voucher->addEntity('issuer', EntityType::INDIVIDUAL, '');
     }
     /**
      * Test addEntity method with spanish entity names.
@@ -127,8 +128,8 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         // Prepare
         $voucher = new Voucher;
         // Execute
-        $voucher->addEntity('emisor', Entity::TYPE_INDIVIDUAL, 123456);
-        $voucher->addEntity('receptor', Entity::TYPE_FOREIGNER, 654321);
+        $voucher->addEntity('emisor', EntityType::INDIVIDUAL, 123456);
+        $voucher->addEntity('receptor', EntityType::FOREIGNER, 654321);
         // Assert
         $this->assertInternalType('object', $voucher->issuer);
         $this->assertInternalType('object', $voucher->receiver);
