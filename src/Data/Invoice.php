@@ -185,7 +185,7 @@ class Invoice extends Model implements XmlCastable
         // Payment type
         $xmlChild = $xml->addChild('MedioPago', $this->paymentType);
         // Details
-        if ($this->items && is_array($this->items)) {
+        if ($this->items && count($this->items) > 0) {
             $xmlDetails = $xml->addChild('DetalleServicio');
             for ($i = 0; $i < count($this->items); ++$i) {
                 $this->items[$i]->isValid();
@@ -215,7 +215,8 @@ class Invoice extends Model implements XmlCastable
                 if ($this->items[$i]->discountDescription)
                     $xmlChild = $xmlItemLine->addChild('NaturalezaDescuento', $this->items[$i]->discountDescription);
                 // SubTotal
-                $xmlChild = $xmlItemLine->addChild('SubTotal', $this->items[$i]->subtotal);
+                if ($this->items[$i]->subtotal)
+                    $xmlChild = $xmlItemLine->addChild('SubTotal', $this->items[$i]->subtotal);
                 // Impuesto
                 if ($this->items[$i]->taxType)
                     $xmlChild = $xmlItemLine->addChild('Impuesto', $this->items[$i]->taxType);
