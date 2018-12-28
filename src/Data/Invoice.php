@@ -159,7 +159,7 @@ class Invoice extends Model implements XmlCastable
      * 
      * @link https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.2/FacturaElectronica_V.4.2.xsd
      *
-     * @return string
+     * @return SimpleXMLElement
      */
     public function toXml()
     {
