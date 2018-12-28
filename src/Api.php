@@ -51,14 +51,14 @@ class Api
      * Api instance.
      * @since 1.0.0
      *
-     * @var object|Api
+     * @var object|ComprobanteElectronico\Api
      */
     protected static $instance;
     /**
      * Access token.
      * @since 1.0.0
      *
-     * @var string
+     * @var object|ComprobanteElectronico\Data\AccessToken
      */
     protected $accessToken;
     /**

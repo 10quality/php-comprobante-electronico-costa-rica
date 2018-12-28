@@ -432,12 +432,12 @@ class MeasureUnitType extends Enum
         'mÂ³'       => 'Cubic Meter',
         'm/s'       => 'Meter per Second',
         'm/sÂ²'     => 'Meter per Square Second',
-        'ln'        => 'Inch'
+        'ln'        => 'Inch',
         'g'         => 'Gram',
         'kg'        => 'Kilogram',
         'kg/mÂ³'    => 'Kilogram per Cubic Meter',
-        't'         => 'Ton'
-        'Oz'        => 'Ounce'
+        't'         => 'Ton',
+        'Oz'        => 'Ounce',
         'mL'        => 'Mililiter',
         'L'         => 'Liter',
         'A'         => 'Ampere',

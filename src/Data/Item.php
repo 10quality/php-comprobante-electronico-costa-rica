@@ -2,12 +2,15 @@
 
 namespace ComprobanteElectronico\Data;
 
+use Exception;
 use TenQuality\Data\Model;
 use ComprobanteElectronico\Enums\CodeType;
 use ComprobanteElectronico\Enums\TaxType;
+use ComprobanteElectronico\Enums\MeasureUnitType;
 
 /**
  * Invoice item data model.
+ * The item is used to describe the items purchased in an order.
  * 
  * @link https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.2/FacturaElectronica_V4.2.pdf
  *
@@ -68,7 +71,7 @@ class Item extends Model
      *
      * @return bool
      */
-    protected function isValid()
+    public function isValid()
     {
         if (!CodeType::exists($this->codeType))
             throw new Exception(sprintf('Unknown code type \'%s\'.', $this->codeType));
@@ -98,6 +101,8 @@ class Item extends Model
             throw new Exception('Discount description can not have more than 80 characters.');
         if ($this->taxType && !TaxType::exists($this->taxType))
             throw new Exception(sprintf('Unknown tax type \'%s\'.', $this->taxType));
+        if ($this->measureUnitType && !MeasureUnitType::exists($this->measureUnitType))
+            throw new Exception(sprintf('Unknown measure unit type \'%s\'.', $this->measureUnitType));
         return true;
     }
 }

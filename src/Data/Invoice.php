@@ -54,7 +54,7 @@ class Invoice extends Model implements XmlCastable
     ];
     /**
      * Init invoice model.
-     * @since 1.1.0
+     * @since 1.0.0
      * 
      * @param array $attributes Invoice attributes.
      */
@@ -65,7 +65,7 @@ class Invoice extends Model implements XmlCastable
     }
     /**
      * Adds an item to invoice.
-     * @since 1.1.0
+     * @since 1.0.0
      * 
      * @param \ComprobanteElectronico\Data\Item $item Item to add.
      * 
@@ -84,7 +84,7 @@ class Invoice extends Model implements XmlCastable
      *
      * @return bool
      */
-    protected function isValid()
+    public function isValid()
     {
         if ($this->currency === null || strlen($this->currency) === 0)
             throw new Exception('Currency is missing.');
@@ -104,47 +104,47 @@ class Invoice extends Model implements XmlCastable
             throw new Exception(sprintf('Unknown payment type \'%s\'.', $this->paymentType));
         if ($this->exchangeRate && !is_numeric($this->exchangeRate))
             throw new Exception('Exchange rate is not numeric.');
-        if $this->exchangeRate && ($this->exchangeRate > 9999999999999.99999)
+        if ($this->exchangeRate && $this->exchangeRate > 9999999999999.99999)
             throw new Exception('Exchange rate should be lower than 9999999999999.99999.');
         if ($this->totalTaxedServices && !is_numeric($this->totalTaxedServices))
             throw new Exception('Total taxed services is not numeric.');
-        if ($this->totalTaxedServices && ($this->totalTaxedServices > 9999999999999.99999)
+        if ($this->totalTaxedServices && $this->totalTaxedServices > 9999999999999.99999)
             throw new Exception('Total taxed services should be lower than 9999999999999.99999.');
         if ($this->totalExemptServices && !is_numeric($this->totalExemptServices))
             throw new Exception('Total exempt services is not numeric.');
-        if ($this->totalExemptServices && ($this->totalExemptServices > 9999999999999.99999)
+        if ($this->totalExemptServices && $this->totalExemptServices > 9999999999999.99999)
             throw new Exception('Total exempt services should be lower than 9999999999999.99999.');
         if ($this->totalTaxedGoods && !is_numeric($this->totalTaxedGoods))
             throw new Exception('Total taxed goods is not numeric.');
-        if ($this->totalTaxedGoods && ($this->totalTaxedGoods > 9999999999999.99999)
+        if ($this->totalTaxedGoods && $this->totalTaxedGoods > 9999999999999.99999)
             throw new Exception('Total taxed goods should be lower than 9999999999999.99999.');
         if ($this->totalExemptGoods && !is_numeric($this->totalExemptGoods))
             throw new Exception('Total exempt goods is not numeric.');
-        if ($this->totalExemptGoods && ($this->totalExemptGoods > 9999999999999.99999)
+        if ($this->totalExemptGoods && $this->totalExemptGoods > 9999999999999.99999)
             throw new Exception('Total exempt goods should be lower than 9999999999999.99999.');
         if ($this->totalTaxed && !is_numeric($this->totalTaxed))
             throw new Exception('Total taxed is not numeric.');
-        if ($this->totalTaxed && ($this->totalTaxed > 9999999999999.99999)
+        if ($this->totalTaxed && $this->totalTaxed > 9999999999999.99999)
             throw new Exception('Total taxed should be lower than 9999999999999.99999.');
         if ($this->totalExempt && !is_numeric($this->totalExempt))
             throw new Exception('Total exempt is not numeric.');
-        if ($this->totalExempt && ($this->totalExempt > 9999999999999.99999)
+        if ($this->totalExempt && $this->totalExempt > 9999999999999.99999)
             throw new Exception('Total exempt should be lower than 9999999999999.99999.');
         if ($this->totalSales && !is_numeric($this->totalSales))
             throw new Exception('Total sales is not numeric.');
-        if ($this->totalSales && ($this->totalSales > 9999999999999.99999)
+        if ($this->totalSales && $this->totalSales > 9999999999999.99999)
             throw new Exception('Total sales should be lower than 9999999999999.99999.');
         if ($this->totalDiscount && !is_numeric($this->totalDiscount))
             throw new Exception('Total discount is not numeric.');
-        if ($this->totalDiscount && ($this->totalDiscount > 9999999999999.99999)
+        if ($this->totalDiscount && $this->totalDiscount > 9999999999999.99999)
             throw new Exception('Total discount should be lower than 9999999999999.99999.');
         if ($this->totalNetSales && !is_numeric($this->totalNetSales))
             throw new Exception('Total net sales is not numeric.');
-        if ($this->totalNetSales && ($this->totalNetSales > 9999999999999.99999)
+        if ($this->totalNetSales && $this->totalNetSales > 9999999999999.99999)
             throw new Exception('Total net sales should be lower than 9999999999999.99999.');
         if ($this->totalTaxes && !is_numeric($this->totalTaxes))
             throw new Exception('Total in taxes is not numeric.');
-        if ($this->totalTaxes && ($this->totalTaxes > 9999999999999.99999)
+        if ($this->totalTaxes && $this->totalTaxes > 9999999999999.99999)
             throw new Exception('Total in taxes should be lower than 9999999999999.99999.');
         // Validate items
         if ($this->items)

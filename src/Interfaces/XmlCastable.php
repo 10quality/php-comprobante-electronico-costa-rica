@@ -18,7 +18,7 @@ interface XmlCastable
      *
      * @return bool
      */
-    protected function isValid();
+    public function isValid();
     /**
      * Returns model as its expected XML string.
      * @since 1.0.0
