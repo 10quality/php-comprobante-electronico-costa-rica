@@ -43,6 +43,20 @@ class ZI18NTest extends PHPUnit_Framework_TestCase
      * Test spanish translations for enums.
      * @since 1.0.0
      */
+    public function testCharacterEscaping()
+    {
+        // Prepare
+        __i18nInit('es', __DIR__.'/../cache/');
+        $string = 'Unknown entity type \'%s\'.';
+        // Exec
+        $output = __i18n($string);
+        // Assert
+        $this->assertEquals('Tipo de entidad \'%s\' desconocido.', $output);
+    }
+    /**
+     * Test spanish translations for enums.
+     * @since 1.0.0
+     */
     public function testEnumDescription()
     {
         // Prepare

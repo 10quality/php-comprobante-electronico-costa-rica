@@ -56,13 +56,13 @@ class Entity extends Model
     public function toReceptionArray()
     {
         if ($this->rawId === null || strlen($this->rawId) === 0)
-            throw new Exception('Entity\'s ID is missing.');
+            throw new Exception(__i18n('Entity\'s ID is missing.'));
         if ($this->type === null || strlen($this->type) === 0)
-            throw new Exception('Entity\'s type is missing.');
+            throw new Exception(__i18n('Entity\'s type is missing.'));
         if (strlen($this->id) > 12)
-            throw new Exception('Entity\'s ID is greater than 12 digits.');
+            throw new Exception(__i18n('Entity\'s ID is greater than 12 digits.'));
         if (!EntityType::exists($this->type))
-            throw new Exception(sprintf('Unknown entity type \'%s\'.', $this->type));
+            throw new Exception(sprintf(__i18n('Unknown entity type \'%s\'.'), $this->type));
         return [
             'tipoIdentificacion'    => $this->type,
             'numeroIdentificacion'  => $this->id,
