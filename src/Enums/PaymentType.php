@@ -67,7 +67,7 @@ class PaymentType extends Enum
         '02'    => 'Credit Card',
         '03'    => 'Check',
         '04'    => 'Bank Deposit',
-        '05'    => '3rd Party Collection',
+        '05'    => 'Raised by third parties',
         '99'    => 'Other',
     ];
     /**

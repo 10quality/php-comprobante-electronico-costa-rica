@@ -218,7 +218,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Address must be an instace of class 'Address'.
+     * @expectedExceptionMessage Address must be an instance of class 'Address'.
      */
     public function testIsValidInvalidAddressException()
     {
@@ -236,7 +236,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Phone must be an instace of class 'Phone'.
+     * @expectedExceptionMessage Phone must be an instance of class 'Phone'.
      */
     public function testIsValidInvalidPhoneException()
     {
@@ -255,7 +255,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Fax must be an instace of class 'Phone'.
+     * @expectedExceptionMessage Fax must be an instance of class 'Phone'.
      */
     public function testIsValidInvalidFaxException()
     {
