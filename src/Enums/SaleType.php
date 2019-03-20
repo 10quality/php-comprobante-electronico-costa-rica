@@ -72,7 +72,7 @@ class SaleType extends Enum
     protected $constants = [
         '01'    => 'Cash',
         '02'    => 'Credit',
-        '03'    => 'Consignation',
+        '03'    => 'Consignment',
         '04'    => 'Apart',
         '05'    => 'Purchase lease',
         '06'    => 'Finance lease',
