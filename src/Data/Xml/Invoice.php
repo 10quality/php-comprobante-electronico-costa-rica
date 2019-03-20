@@ -185,40 +185,11 @@ class Invoice extends Model
         if ($this->items && count($this->items) > 0) {
             $xmlDetails = $xml->addChild('DetalleServicio');
             for ($i = 0; $i < count($this->items); ++$i) {
-                $this->items[$i]->isValid();
                 $xmlItemLine = $xmlDetails->addChild('LineaDetalle');
                 // Line number
                 $xmlChild = $xmlItemLine->addChild('NumeroLinea', $i + 1);
                 // CodigoType
-                $xmlChild = $xmlItemLine->addChild('Codigo', $this->items[$i]->codeType);
-                // Cantidad
-                $xmlChild = $xmlItemLine->addChild('Cantidad', $this->items[$i]->quantity);
-                // UnidadMedida
-                $xmlChild = $xmlItemLine->addChild('UnidadMedida', $this->items[$i]->measureUnitType);
-                // UnidadMedidaComercial
-                if ($this->items[$i]->comercialMeasureUnit)
-                    $xmlChild = $xmlItemLine->addChild('UnidadMedidaComercial', $this->items[$i]->comercialMeasureUnit);
-                // Detalle
-                if ($this->items[$i]->description)
-                    $xmlChild = $xmlItemLine->addChild('Detalle', $this->items[$i]->details);
-                // PrecioUnitario
-                $xmlChild = $xmlItemLine->addChild('PrecioUnitario', $this->items[$i]->price);
-                // MontoTotal
-                $xmlChild = $xmlItemLine->addChild('MontoTotal', $this->items[$i]->totalPrice);
-                // MontoDescuento
-                if ($this->items[$i]->discount)
-                    $xmlChild = $xmlItemLine->addChild('MontoDescuento', $this->items[$i]->discount);
-                // NaturalezaDescuento
-                if ($this->items[$i]->discountDescription)
-                    $xmlChild = $xmlItemLine->addChild('NaturalezaDescuento', $this->items[$i]->discountDescription);
-                // SubTotal
-                if ($this->items[$i]->subtotal)
-                    $xmlChild = $xmlItemLine->addChild('SubTotal', $this->items[$i]->subtotal);
-                // Impuesto
-                if ($this->items[$i]->taxType)
-                    $xmlChild = $xmlItemLine->addChild('Impuesto', $this->items[$i]->taxType);
-                // Total
-                $xmlChild = $xmlItemLine->addChild('MontoTotalLinea', $this->items[$i]->total);
+                $this->items[$i]->appendXml('item', $xmlItemLine);
             }
             // Resumen
             $xmlSummary = $xml->addChild('ResumenFactura');

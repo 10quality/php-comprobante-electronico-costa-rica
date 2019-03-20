@@ -129,7 +129,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Comercial measurement unit can not have more than 20 characters.
+     * @expectedExceptionMessage Commercial measurement unit cannot have more than 20 characters.
      */
     public function testComercialMeasurementLengthException()
     {
@@ -363,5 +363,43 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $item->measureUnitType = 'A9999';
         // Assert
         $item->isValid();
+    }
+    /**
+     * Test method.
+     * @since 1.0.0
+     */
+    public function testXmlAppend()
+    {
+        // Prepare
+        $item = new Item;
+        $item->codeType = CodeType::VENDOR;
+        $item->measureUnitType = MeasureUnitType::KILOGRAM;
+        $item->description = 'PROD0001 Shoe';
+        $item->quantity = 2;
+        $item->comercialMeasureUnit = 'kilogramos';
+        $item->price = 5.00;
+        $item->totalPrice = 10.00;
+        $item->discount = 1.00;
+        $item->discountDescription = 'Promocion';
+        $item->subtotal = 9.00;
+        $item->taxType = TaxType::IVA;
+        $item->total = 10.17;
+        $xml = new SimpleXMLElement('<test></test>');
+        // Exec
+        $item->appendXml('model', $xml);
+        $xml = $xml->asXml();
+        // Assert
+        $this->assertTrue(strpos($xml, '<Codigo>01</Codigo>') !== false);
+        $this->assertTrue(strpos($xml, '<UnidadMedida>kg</UnidadMedida>') !== false);
+        $this->assertTrue(strpos($xml, '<Detalle>PROD0001 Shoe</Detalle>') !== false);
+        $this->assertTrue(strpos($xml, '<Cantidad>2</Cantidad>') !== false);
+        $this->assertTrue(strpos($xml, '<UnidadMedidaComercial>kilogramos</UnidadMedidaComercial>') !== false);
+        $this->assertTrue(strpos($xml, '<PrecioUnitario>5</PrecioUnitario>') !== false);
+        $this->assertTrue(strpos($xml, '<MontoTotal>10</MontoTotal>') !== false);
+        $this->assertTrue(strpos($xml, '<MontoDescuento>1</MontoDescuento>') !== false);
+        $this->assertTrue(strpos($xml, '<NaturalezaDescuento>Promocion</NaturalezaDescuento>') !== false);
+        $this->assertTrue(strpos($xml, '<SubTotal>9</SubTotal>') !== false);
+        $this->assertTrue(strpos($xml, '<Impuesto>01</Impuesto>') !== false);
+        $this->assertTrue(strpos($xml, '<MontoTotalLinea>10.17</MontoTotalLinea>') !== false);
     }
 }
