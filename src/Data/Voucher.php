@@ -56,4 +56,41 @@ class Voucher extends Model
             $this->$entity->id = $id;
         }
     }
+    /**
+     * Returns a valid array for reception.
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function toReceptionArray()
+    {
+        // Validations
+        if ($this->issuer === null)
+            throw new Exception('Issuer is missing.');
+        if (!is_a(Entity::class, $this->issuer))
+            throw new Exception('Issuer must be an instance of class Entity.');
+        if ($this->xml === null)
+            throw new Exception('XML string is missing.');
+        if ($this->key === null)
+            throw new Exception('Key is missing.');
+        if (strlen($this->key) > 50)
+            throw new Exception('Key is greater than 50 characters.');
+        // Prepare output
+        if ($this->time === null)
+            $this->time = time();
+        $output = [
+            'clave'             => $this->key,
+            'fecha'             => $this->id,
+            'emisor'            => $this->issuer->toReceptionArray(),
+            'comprobanteXml'    => $this->xml,
+        ];
+        // Add optional properties
+        if ($this->receiver !== null && is_a(Entity::class, $this->receiver))
+            $output['receptor'] = $this->receiver->toReceptionArray();
+        if ($this->callback !== null)
+            $output['callbackUrl'] = $this->callback;
+        if ($this->receiverSerial !== null)
+            $output['consecutivoReceptor'] = $this->receiverSerial;
+        return $output;
+    }
 }
