@@ -3,6 +3,7 @@
 namespace ComprobanteElectronico;
 
 use Curl;
+use Exception;
 use ComprobanteElectronico\Data\AccessToken;
 use ComprobanteElectronico\Data\Settings;
 use ComprobanteElectronico\Data\Voucher;
@@ -176,6 +177,8 @@ class Api
      */
     public function send(Voucher $voucher, $callback)
     {
+        if (!$voucher->hasEncryption)
+            throw new Exception(__i18n('Voucher doesn\'t have an encryption key file and/or a pin.'));
         $this->requestAccessToken();
         $voucher->callback = $callback;
         $response = Curl::request(

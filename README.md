@@ -37,6 +37,12 @@ Ver la [wiki](https://github.com/10quality/php-comprobante-electronico-costa-ric
 * [Documentación programación](https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.1/comprobantes-electronicos-api.html).
 * [Estructura XML](https://tribunet.hacienda.go.cr/FormatosYEstructurasXML.jsp)
 
+## Desarrollo y contribución
+
+Cualquier aporte debe seguir los lineamientos o estándares establecidos en [PSR-2](https://www.php-fig.org/psr/psr-2/).
+
+Para realizar pruebas (Unit testing) con Phpunit, deberas copiar una "llave criptográfica" de pruebas en la carpeta "tests", esta llave debera tener pin "1234".
+
 ## Licencia
 
 Licencia MIT. [Detalles](https://es.wikipedia.org/wiki/Licencia_MIT)
@@ -44,5 +50,3 @@ Licencia MIT. [Detalles](https://es.wikipedia.org/wiki/Licencia_MIT)
 ## Open Source
 
 Este paquete es open source (codigo abierto) y es actualmente mantenido y administrado por [10 Quality](https://www.10quality.com/).
-
-Cualquier aporte debe seguir los lineamientos o estándares establecidos en [PSR-2](https://www.php-fig.org/psr/psr-2/).
