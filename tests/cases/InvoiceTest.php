@@ -589,7 +589,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Unknown code type 'YO'.
+     * @expectedExceptionMessage Quantity is not numeric.
      */
     public function testItemException()
     {
@@ -598,7 +598,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
-        $invoice->add(new Item(['codeType' => 'YO']));
+        $invoice->add(new Item);
         // Assert
         $invoice->isValid();
     }

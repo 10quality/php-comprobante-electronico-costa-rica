@@ -8,6 +8,7 @@ use ComprobanteElectronico\Enums\CodeType;
 use ComprobanteElectronico\Enums\TaxType;
 use ComprobanteElectronico\Enums\MeasureUnitType;
 use ComprobanteElectronico\Interfaces\XmlAppendable;
+use ComprobanteElectronico\Data\ItemCode;
 
 /**
  * Invoice item data model.
@@ -30,7 +31,7 @@ class Item extends Model implements XmlAppendable
      */
     protected $properties = [
         'quantity',
-        'codeType',
+        'code',
         'measureUnitType',
         'taxType',
         'comercialMeasureUnit',
@@ -74,8 +75,8 @@ class Item extends Model implements XmlAppendable
      */
     public function isValid()
     {
-        if (!CodeType::exists($this->codeType))
-            throw new Exception(sprintf(__i18n('Unknown code type \'%s\'.'), $this->codeType));
+        if ($this->code && !is_a($this->code, ItemCode::class))
+            throw new Exception(__i18n('Code must be an instance of class \'ItemCode\'.'));
         if (!is_numeric($this->quantity))
             throw new Exception(__i18n('Quantity is not numeric.'));
         if (strlen($this->quantity) > 16)
@@ -118,8 +119,9 @@ class Item extends Model implements XmlAppendable
         // The Item is handled differently when appended to xml because the parent needs to create
         // A sequencial number to identify the item line. There for $element will no be used.
         // -------------
-        // CodigoType
-        $xml->addChild('Codigo', $this->codeType);
+        // Codigo
+        if ($this->code)
+            $this->code->appendXml('Codigo', $xml);
         // Cantidad
         $xml->addChild('Cantidad', $this->quantity);
         // UnidadMedida

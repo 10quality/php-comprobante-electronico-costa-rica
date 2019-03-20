@@ -1,6 +1,7 @@
 <?php
 
 use ComprobanteElectronico\Data\Item;
+use ComprobanteElectronico\Data\ItemCode;
 use ComprobanteElectronico\Enums\CodeType;
 use ComprobanteElectronico\Enums\MeasureUnitType;
 use ComprobanteElectronico\Enums\TaxType;
@@ -24,7 +25,6 @@ class ItemTest extends PHPUnit_Framework_TestCase
         // Prepare
         $item = new Item;
         $item->quantity = 2;
-        $item->codeType = CodeType::VENDOR;
         $item->measureUnitType = MeasureUnitType::KILOGRAM;
         $item->taxType = TaxType::IVA;
         $item->comercialMeasureUnit = 'kg';
@@ -35,7 +35,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $item->discountDescription = 'None';
         $item->subtotal = 19.0;
         $item->total = 19.0;
-        $expected = '{"quantity":2,"codeType":"01","measureUnitType":"kg",'
+        $expected = '{"quantity":2,"measureUnitType":"kg",'
             .'"taxType":"01","comercialMeasureUnit":"kg","description":"This a test item.",'
             .'"price":9.5,"totalPrice":19,"discount":0,"discountDescription":"None","subtotal":19,"total":19}';
         // Assert
@@ -82,13 +82,13 @@ class ItemTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Unknown code type '99999'.
+     * @expectedExceptionMessage Code must be an instance of class 'ItemCode'.
      */
     public function testInvalidCodeException()
     {
         // Prepare
         $item = new Item;
-        $item->codeType = '99999';
+        $item->code = CodeType::VENDOR;
         // Assert
         $item->isValid();
     }
@@ -103,7 +103,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 'six';
         // Assert
         $item->isValid();
@@ -119,7 +119,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 1234567891234567789564;
         // Assert
         $item->isValid();
@@ -135,7 +135,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'morethan20charactersNoPermited';
         // Assert
@@ -152,7 +152,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 'six';
@@ -170,7 +170,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 19999999999999.99999;
@@ -188,7 +188,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -207,7 +207,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -226,7 +226,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -246,7 +246,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -266,7 +266,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -287,7 +287,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -308,7 +308,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -331,7 +331,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -353,7 +353,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
+        $item->code = new ItemCode;
         $item->quantity = 2;
         $item->comercialMeasureUnit = 'kg';
         $item->price = 5.99;
@@ -372,7 +372,6 @@ class ItemTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $item = new Item;
-        $item->codeType = CodeType::VENDOR;
         $item->measureUnitType = MeasureUnitType::KILOGRAM;
         $item->description = 'PROD0001 Shoe';
         $item->quantity = 2;
@@ -389,7 +388,6 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $item->appendXml('model', $xml);
         $xml = $xml->asXml();
         // Assert
-        $this->assertTrue(strpos($xml, '<Codigo>01</Codigo>') !== false);
         $this->assertTrue(strpos($xml, '<UnidadMedida>kg</UnidadMedida>') !== false);
         $this->assertTrue(strpos($xml, '<Detalle>PROD0001 Shoe</Detalle>') !== false);
         $this->assertTrue(strpos($xml, '<Cantidad>2</Cantidad>') !== false);
