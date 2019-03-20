@@ -20,8 +20,9 @@ class EntityTest extends PHPUnit_Framework_TestCase
     public function testConstants()
     {
         $this->assertEquals('01', EntityType::INDIVIDUAL);
-        $this->assertEquals('02', EntityType::FOREIGNER);
-        $this->assertEquals('03', EntityType::BUSINESS);
+        $this->assertEquals('02', EntityType::JURIDICAL);
+        $this->assertEquals('03', EntityType::DIMEX);
+        $this->assertEquals('04', EntityType::NITE);
     }
     /**
      * Test entity properties.
@@ -119,14 +120,14 @@ class EntityTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Unknown entity type '04'.
+     * @expectedExceptionMessage Unknown entity type '99'.
      */
     public function testReceptionConversionExceptionTypeUnknown()
     {
         // Prepare
         $entity = new Entity;
         $entity->id = '1-1212-0030';
-        $entity->type = '04';
+        $entity->type = '99';
         // Execute
         $reception = $entity->toReceptionArray();
     }

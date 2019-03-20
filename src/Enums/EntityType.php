@@ -22,19 +22,26 @@ class EntityType extends Enum
      */
     const INDIVIDUAL = '01';
     /**
-     * Type that identifies a foreigner.
+     * Type that identifies a business.
      * @since 1.0.0
      *
      * @var string
      */
-    const FOREIGNER = '02';
+    const JURIDICAL = '02';
     /**
      * Type that identifies a business.
      * @since 1.0.0
      *
      * @var string
      */
-    const BUSINESS = '03';
+    const DIMEX = '03';
+    /**
+     * Type that identifies a business.
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const NITE = '04';
     /**
      * List of constant codes and descriptions.
      * @since 1.0.0
@@ -42,9 +49,10 @@ class EntityType extends Enum
      * @var array 
      */
     protected $constants = [
-        '01'    => 'Individual Person',
-        '02'    => 'Foreigner Person',
-        '03'    => 'Business Entity',
+        '01'    => 'Individual Identification',
+        '02'    => 'Juridical Identification',
+        '03'    => 'DIMEX',
+        '04'    => 'NITE',
     ];
     /**
      * Returns all constants available in class.

@@ -8,7 +8,7 @@
  * @version 1.0.0
  */
 
-if (!function_exists('__cecr_i18n_init')) {
+if (!function_exists('__i18nInit')) {
     /**
      * Inits i18n multilanguage support.
      * cecr = Comprobante Electronico Costa Rica
@@ -17,7 +17,7 @@ if (!function_exists('__cecr_i18n_init')) {
      * @param string $locale Language locale to use.
      * @param string $cache  Cache file path.
      */
-    function __cecr_i18n_init($locale = 'es', $cache = null)
+    function __i18nInit($locale = 'es', $cache = null)
     {
         $load = defined('CECR_I18N') ? CECR_I18N : true;
         if ($load) {
@@ -32,16 +32,37 @@ if (!function_exists('__cecr_i18n_init')) {
     }
 }
 
-if (! function_exists('__cecr_i18n')) {
+if (! function_exists('__i18n')) {
     /**
      * Returns a translation found in language files.
      * cecr = Comprobante Electronico Costa Rica
-     * @since 1.0.0 
+     * @since 1.0.0
+     * 
+     * @param string $string String or key to use to find translation.
+     * @param array  $args   Translation args.
+     * 
+     * @return string
      */
-    function __cecr_i18n($string, $args = [])
+    function __i18n($string, $args = [])
     {
         return function_exists('L')
             ? L(mb_strtolower(trim(preg_replace(['/\s/', '/[\.\,\'\"\?\!\:]/'], ['_',''], $string))), $args)
             : $string;
+    }
+}
+
+if (! function_exists('__cecrDate')) {
+    /**
+     * Returns time value as valid date format.
+     * @since 1.0.0
+     * 
+     * @param {mixed} $time Time value to format to date.
+     * 
+     * @return string
+     */
+    function __cecrDate($time)
+    {
+        $time = is_string($time) ? strtotime($time) : $time;
+        return date('Y-m-d', $time).'T'.date('H:i:s', $time).'Z';
     }
 }

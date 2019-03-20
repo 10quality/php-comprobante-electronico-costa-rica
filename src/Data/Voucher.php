@@ -16,6 +16,12 @@ use TenQuality\Data\Model;
 class Voucher extends Model
 {
     /**
+     * Path to where the encryption key file (p12) is located.
+     * @since 1.0.0
+     * @var string
+     */
+    protected $encryptionKeyFilename = null;
+    /**
      * Model properties.
      * @since 1.0.0
      *
@@ -25,7 +31,44 @@ class Voucher extends Model
         'time',
         'issuer',
         'receiver',
+        'hasEncryption',
     ];
+    /**
+     * Overrides parent constructor to allow definition of the encryption key.
+     * @since 1.0.0
+     * 
+     * @param string $encryptionKeyPath Path to where the encryption key file (P2) is located.
+     * @param array  $attributes        Model attributes.
+     */
+    public function __construct($encryptionKeyFilename = null, $attributes = [])
+    {
+        $this->encryptionKeyFilename = $encryptionKeyFilename;
+        parent::__construct($attributes);
+    }
+    /**
+     * Returns flag indicating if model has encryption enabled or not.
+     * @since 1.0.0
+     * 
+     * @return bool
+     */
+    protected function getHasEncryptionAlias()
+    {
+        return $this->encryptionKeyFilename !== null
+            && is_file($this->encryptionKeyFilename);
+    }
+    /**
+     * Returns XML encrypted.
+     * @since 1.0.0
+     * 
+     * @return string
+     */
+    protected function getEncryptedXmlAlias()
+    {
+        if ($this->hasEncryption && $this->xml) {
+
+        }
+        return null;
+    }
     /**
      * Adds a new entity.
      * @since 1.0.0
@@ -80,12 +123,12 @@ class Voucher extends Model
             $this->time = time();
         $output = [
             'clave'             => $this->key,
-            'fecha'             => $this->id,
+            'fecha'             => __cecrDate($this->time),
             'emisor'            => $this->issuer->toReceptionArray(),
-            'comprobanteXml'    => $this->xml,
+            'comprobanteXml'    => $this->hasEncryption ? $this->encryptedXml : $this->xml,
         ];
         // Add optional properties
-        if ($this->receiver !== null && is_a(Entity::class, $this->receiver))
+        if ($this->receiver !== null && is_a($this->receiver, Entity::class))
             $output['receptor'] = $this->receiver->toReceptionArray();
         if ($this->callback !== null)
             $output['callbackUrl'] = $this->callback;

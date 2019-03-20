@@ -60,7 +60,10 @@ abstract class Enum implements Arrayable, Stringable
      */
     public function getConstants()
     {
-        return $this->constants;
+        return array_map(
+            function($description) { return __i18n($description); },
+            $this->constants
+        );
     }
     /**
      * Returns object as string.
@@ -72,9 +75,21 @@ abstract class Enum implements Arrayable, Stringable
     {
         $output = [];
         foreach (static::__getConstants() as $key => $value) {
-            $output[$value] = isset($this->constants[$value]) ? $this->constants[$value] : $key;
+            $output[$value] = __i18n(isset($this->constants[$value]) ? $this->constants[$value] : $key);
         }
         return $output;
+    }
+    /**
+     * Returns the name/description of constanct key.
+     * @since 1.0.0
+     * 
+     * @param mixed $value Enum value to check.
+     * 
+     * @return mixed
+     */
+    public function getDescription($value)
+    {
+        return __i18n(isset($this->constants[$value]) ? $this->constants[$value] : $value);
     }
     /**
      * Returns object as string.

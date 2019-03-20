@@ -21,9 +21,10 @@ class EnumTest extends PHPUnit_Framework_TestCase
         // Prepare
         $enum = new EntityType;
         $expected = [
-            '01'    => 'Individual Person',
-            '02'    => 'Foreigner Person',
-            '03'    => 'Business Entity',
+            '01'    => 'Individual Identification',
+            '02'    => 'Juridical Identification',
+            '03'    => 'DIMEX',
+            '04'    => 'NITE',
         ];
         // Assert
         $this->assertEquals($expected, $enum->getConstants());
@@ -37,9 +38,10 @@ class EnumTest extends PHPUnit_Framework_TestCase
         // Prepare
         $enum = new EntityType;
         $expected = [
-            '01'    => 'Individual Person',
-            '02'    => 'Foreigner Person',
-            '03'    => 'Business Entity',
+            '01'    => 'Individual Identification',
+            '02'    => 'Juridical Identification',
+            '03'    => 'DIMEX',
+            '04'    => 'NITE',
         ];
         // Assert
         $this->assertEquals($expected, $enum->toArray());
@@ -52,7 +54,7 @@ class EnumTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $enum = new EntityType;
-        $expected = '{"01":"Individual Person","02":"Foreigner Person","03":"Business Entity"}';
+        $expected = '{"01":"Individual Identification","02":"Juridical Identification","03":"DIMEX","04":"NITE"}';
         // Assert
         $this->assertEquals($expected, (string)$enum);
     }
@@ -65,5 +67,16 @@ class EnumTest extends PHPUnit_Framework_TestCase
         // Assert
         $this->assertTrue(EntityType::exists(EntityType::INDIVIDUAL));
         $this->assertFalse(EntityType::exists('900999'));
+    }
+    /**
+     * Test method.
+     * @since 1.0.0
+     */
+    public function testGetDescription()
+    {
+        // Prepare
+        $enum = new EntityType;
+        // Assert
+        $this->assertEquals('Individual Identification', $enum->getDescription(EntityType::INDIVIDUAL));
     }
 }

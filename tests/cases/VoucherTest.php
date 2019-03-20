@@ -26,7 +26,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         $voucher->issuer = 2;
         $voucher->receiver = 3;
         // Assert
-        $this->assertEquals('{"time":1,"issuer":2,"receiver":3}', (string)$voucher);
+        $this->assertEquals('{"time":1,"issuer":2,"receiver":3,"hasEncryption":false}', (string)$voucher);
     }
     /**
      * Test addEntity method.
@@ -129,7 +129,7 @@ class VoucherTest extends PHPUnit_Framework_TestCase
         $voucher = new Voucher;
         // Execute
         $voucher->addEntity('emisor', EntityType::INDIVIDUAL, 123456);
-        $voucher->addEntity('receptor', EntityType::FOREIGNER, 654321);
+        $voucher->addEntity('receptor', EntityType::JURIDICAL, 654321);
         // Assert
         $this->assertInternalType('object', $voucher->issuer);
         $this->assertInternalType('object', $voucher->receiver);
