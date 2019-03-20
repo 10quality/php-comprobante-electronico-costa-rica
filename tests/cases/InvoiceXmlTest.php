@@ -1,6 +1,6 @@
 <?php
 
-use ComprobanteElectronico\Data\Invoice;
+use ComprobanteElectronico\Data\Xml\Invoice;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
 

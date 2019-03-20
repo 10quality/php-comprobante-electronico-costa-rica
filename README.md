@@ -17,7 +17,7 @@ Contenido:
 
 Lo que se espera para version 1:
 
-* Generación de archivos XML.
+* Generación de archivos XML (Estructura version 4.2).
 * Envío a hacienda.
 
 ## Documentación

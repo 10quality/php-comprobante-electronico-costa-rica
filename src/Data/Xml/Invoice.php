@@ -1,14 +1,12 @@
 <?php
 
-namespace ComprobanteElectronico\Data;
+namespace ComprobanteElectronico\Data\Xml;
 
 use Exception;
-use SimpleXMLElement;
-use TenQuality\Data\Model;
-use TenQuality\Data\Collection;
-use ComprobanteElectronico\Interfaces\XmlCastable;
+use ComprobanteElectronico\Abstracts\Xml as Model;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
+use ComprobanteElectronico\Traits\XmlWithItemsTrait;
 
 /**
  * Invoice XML model.
@@ -20,8 +18,37 @@ use ComprobanteElectronico\Enums\PaymentType;
  * @package ComprobanteElectronico
  * @version 1.0.0
  */
-class Invoice extends Model implements XmlCastable
+class Invoice extends Model
 {
+    use XmlWithItemsTrait;
+    /**
+     * Indicates the root element.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $element = 'FacturaElectronica';
+    /**
+     * Indicates the schema used.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $schema = 'https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/facturaElectronica';
+    /**
+     * Indicates the schema location used.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $schemaLocation = 'https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/FacturaElectronica_V.4.2.xsd';
+    /**
+     * Indicates the version used.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $version = '4.2';
     /**
      * Model properties.
      * @since 1.0.0
@@ -52,30 +79,6 @@ class Invoice extends Model implements XmlCastable
         'total',
         'items',
     ];
-    /**
-     * Init invoice model.
-     * @since 1.0.0
-     * 
-     * @param array $attributes Invoice attributes.
-     */
-    public function __construct($attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->items = new Collection;
-    }
-    /**
-     * Adds an item to invoice.
-     * @since 1.0.0
-     * 
-     * @param \ComprobanteElectronico\Data\Item $item Item to add.
-     * 
-     * @return this for chaining
-     */
-    public function add(Item $item)
-    {
-        $this->items[] = $item;
-        return $this;
-    }
     /**
      * Returns flag indicating if model is valid for casting.
      * @since 1.0.0
@@ -146,12 +149,7 @@ class Invoice extends Model implements XmlCastable
             throw new Exception('Total in taxes is not numeric.');
         if ($this->totalTaxes && $this->totalTaxes > 9999999999999.99999)
             throw new Exception('Total in taxes should be lower than 9999999999999.99999.');
-        // Validate items
-        if ($this->items)
-            for ($i = 0; $i < count($this->items); ++$i) {
-                $this->items[$i]->isValid();
-            }
-        return true;
+        return parent::isValid();
     }
     /**
      * Returns model as its expected XML string.
@@ -163,20 +161,19 @@ class Invoice extends Model implements XmlCastable
      */
     public function toXml()
     {
-        $this->isValid();
-        $xml = new SimpleXMLElement('<FacturaElectronica></FacturaElectronica>');
+        $xml = parent::toXml();
         // Clave
         $xmlChild = $xml->addChild('Clave', $this->key);
         // Id
         $xmlChild = $xml->addChild('NumeroConsecutivo', $this->id);
         // Fecha Emision
-        $xmlChild = $xml->addChild('FechaEmision', $this->date);
+        $xmlChild = $xml->addChild('FechaEmision', __cecrDate($this->date));
         // Emisor
         if ($this->issuer)
-            $xmlChild = $xml->addChild('Emisor', $this->issuer->id);
+            $xmlChild = $this->issuer->appendXml('Emisor', $xml);
         // Receptor
         if ($this->receiver)
-            $xmlChild = $xml->addChild('Receptor', $this->receiver->id);
+            $xmlChild = $this->receiver->appendXml('Receptor', $xml);
         // Sale type
         $xmlChild = $xml->addChild('CondicionVenta', $this->saleType);
         // Credit

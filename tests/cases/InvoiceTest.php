@@ -1,6 +1,6 @@
 <?php
 
-use ComprobanteElectronico\Data\Invoice;
+use ComprobanteElectronico\Data\Xml\Invoice;
 use ComprobanteElectronico\Data\Item;
 use ComprobanteElectronico\Data\Entity;
 use ComprobanteElectronico\Enums\EntityType;
