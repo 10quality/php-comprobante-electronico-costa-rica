@@ -93,6 +93,8 @@ class Invoice extends Model
      */
     public function isValid()
     {
+        if ($this->key === null || strlen($this->key) === 0)
+            throw new Exception(__i18n('Key is missing.'));
         if ($this->currency === null || strlen($this->currency) === 0)
             throw new Exception(__i18n('Currency is missing.'));
         if ($this->saleType === null || strlen($this->saleType) === 0)

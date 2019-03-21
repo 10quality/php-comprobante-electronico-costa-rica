@@ -4,7 +4,7 @@ use ComprobanteElectronico\Data\Tax;
 use ComprobanteElectronico\Enums\TaxType;
 
 /**
- * Test exoneration model.
+ * Test tax model.
  *
  * @author Cami M <info@10quality.com>
  * @license MIT

@@ -20,7 +20,7 @@ class InvoiceXmlTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Currency is missing.
+     * @expectedExceptionMessage Key is missing.
      */
     public function testPreValidation()
     {

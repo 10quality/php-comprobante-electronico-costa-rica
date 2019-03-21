@@ -80,6 +80,20 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, (string)$invoice);
     }
     /**
+     * Test exepction.
+     * @since 1.0.0
+     *
+     * @expectedException        Exception
+     * @expectedExceptionMessage Key is missing.
+     */
+    public function testIsValidMissingKeyException()
+    {
+        // Prepare
+        $model = new Invoice;
+        // Execute
+        $model->isValid();
+    }
+    /**
      * Test exception.
      * @since 1.0.0
      *
@@ -90,6 +104,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         // Assert
         $invoice->isValid();
     }
@@ -104,6 +119,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         // Assert
         $invoice->isValid();
@@ -119,6 +135,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = 'A999';
         // Assert
@@ -135,6 +152,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CREDIT;
         // Assert
@@ -151,6 +169,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CREDIT;
         $invoice->creditTerms = 'morethantenchars';
@@ -168,6 +187,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         // Assert
@@ -184,6 +204,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = 'A999';
@@ -201,6 +222,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -219,6 +241,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -237,6 +260,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -255,6 +279,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -273,6 +298,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -291,6 +317,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -309,6 +336,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -327,6 +355,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -345,6 +374,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -363,6 +393,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -381,6 +412,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -399,6 +431,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -417,6 +450,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -435,6 +469,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -453,6 +488,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -471,6 +507,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -489,6 +526,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -507,6 +545,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -525,6 +564,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -543,6 +583,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -561,6 +602,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -579,6 +621,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -597,6 +640,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
     {
         // Prepare
         $invoice = new Invoice;
+        $invoice->key = 1;
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
@@ -609,7 +653,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
      * Test method.
      * @since 1.0.0
      */
-    public function testXmlAppend()
+    public function testXml()
     {
         // Prepare
         $invoice = new Invoice;
