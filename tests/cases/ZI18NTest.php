@@ -37,7 +37,7 @@ class ZI18NTest extends PHPUnit_Framework_TestCase
         // Exec
         $output = __i18n($string);
         // Assert
-        $this->assertEquals('Falta el tipo de moneda (currency).', $output);
+        $this->assertEquals('Falta el código de moneda.', $output);
     }
     /**
      * Test spanish translations for enums.

@@ -7,6 +7,7 @@ use ComprobanteElectronico\Data\Normative;
 use ComprobanteElectronico\Enums\EntityType;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
+use ComprobanteElectronico\Enums\MeasureUnitType;
 
 /**
  * Test invoice model.
@@ -603,5 +604,63 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
         $invoice->add(new Item);
         // Assert
         $invoice->isValid();
+    }
+    /**
+     * Test method.
+     * @since 1.0.0
+     */
+    public function testXmlAppend()
+    {
+        // Prepare
+        $invoice = new Invoice;
+        $invoice->key = 'k';
+        $invoice->id = 123;
+        $invoice->date = 1522252244;
+        $invoice->currency = 'USD';
+        $invoice->saleType = SaleType::CREDIT;
+        $invoice->creditTerms = '1 mes';
+        $invoice->paymentType = PaymentType::OTHER;
+        $invoice->normative = new Normative(['number' => 123, 'date' => time()]);
+        $invoice->exchangeRate = 500;
+        $invoice->totalTaxedServices = 1;
+        $invoice->totalExemptServices = 2;
+        $invoice->totalTaxedGoods = 3;
+        $invoice->totalExemptGoods = 4;
+        $invoice->totalTaxed = 5;
+        $invoice->totalExempt = 6;
+        $invoice->totalSales = 7;
+        $invoice->totalDiscount = 8;
+        $invoice->totalNetSales = 9;
+        $invoice->totalTaxes = 10;
+        $invoice->total = 11;
+        $invoice->add(new Item([
+            'quantity'          => 1,
+            'price'             => 2,
+            'totalPrice'        => 2,
+            'total'             => 2,
+            'measureUnitType'   => MeasureUnitType::KILOGRAM,
+        ]));
+        // Exec
+        $xml = $invoice->toXml()->asXml();
+        // Assert
+        $this->assertTrue(strpos($xml, '<Clave>k</Clave>') !== false);
+        $this->assertTrue(strpos($xml, '<NumeroConsecutivo>123</NumeroConsecutivo>') !== false);
+        $this->assertTrue(strpos($xml, '<FechaEmision>2018-03-28T15:50:44Z</FechaEmision>') !== false);
+        $this->assertTrue(strpos($xml, '<CondicionVenta>02</CondicionVenta>') !== false);
+        $this->assertTrue(strpos($xml, '<MedioPago>99</MedioPago>') !== false);
+        $this->assertTrue(strpos($xml, '<PlazoCredito>1 mes</PlazoCredito>') !== false);
+        $this->assertTrue(strpos($xml, '<CodigoMoneda>USD</CodigoMoneda>') !== false);
+        $this->assertTrue(strpos($xml, '<TipoCambio>500</TipoCambio>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalServGravados>1</TotalServGravados>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalServExentos>2</TotalServExentos>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalMercanciasGravadas>3</TotalMercanciasGravadas>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalMercanciasExentas>4</TotalMercanciasExentas>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalGravado>5</TotalGravado>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalExento>6</TotalExento>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalVenta>7</TotalVenta>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalDescuentos>8</TotalDescuentos>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalVentaNeta>9</TotalVentaNeta>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalImpuesto>10</TotalImpuesto>') !== false);
+        $this->assertTrue(strpos($xml, '<TotalComprobante>11</TotalComprobante>') !== false);
     }
 }
