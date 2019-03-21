@@ -114,6 +114,13 @@ class MeasureUnitType extends Enum
      */
     const KILOGRAM_PER_CUBIC_METER = 'kg/mÂ³';
     /**
+     * Ampere por metro cuadrado.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    const AMPERE_PER_SCUARE_METER = 'A/mÂ²';
+    /**
      * Ampere por metro.
      * @since 1.0.0
      * 
@@ -415,6 +422,13 @@ class MeasureUnitType extends Enum
      */
     const UNITY = 'Unid';
     /**
+     * unidad
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    const OTHER = 'Otros';
+    /**
      * List of constant codes and descriptions.
      * @since 1.0.0
      *
@@ -442,6 +456,7 @@ class MeasureUnitType extends Enum
         'L'         => 'Liter',
         'A'         => 'Ampere',
         'A/m'       => 'Ampere per Meter',
+        'A/mÂ²'     => 'Ampere per Square Meter',
         'K'         => 'Kelvin',
         'mol'       => 'Mol',
         'mol/mÂ³'   => 'Mol per Cubic Meter',
@@ -478,6 +493,7 @@ class MeasureUnitType extends Enum
         'Gy'        => 'Gray',
         'Sv'        => 'Sievert',
         'kat'       => 'Katal',
+        'Otros'     => 'Other',
     ];
     /**
      * Returns all constants available in class.
