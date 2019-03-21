@@ -57,6 +57,20 @@ class ZI18NTest extends PHPUnit_Framework_TestCase
      * Test spanish translations for enums.
      * @since 1.0.0
      */
+    public function testCharacterEscapingParenthesis()
+    {
+        // Prepare
+        __i18nInit('es', __DIR__.'/../cache/');
+        $string = 'One (Refraction Index)';
+        // Exec
+        $output = __i18n($string);
+        // Assert
+        $this->assertEquals('Uno (indice de refracción)', $output);
+    }
+    /**
+     * Test spanish translations for enums.
+     * @since 1.0.0
+     */
     public function testEnumDescription()
     {
         // Prepare
