@@ -4,11 +4,10 @@ namespace ComprobanteElectronico\Data;
 
 use Exception;
 use TenQuality\Data\Model;
-use ComprobanteElectronico\Enums\CodeType;
-use ComprobanteElectronico\Enums\TaxType;
 use ComprobanteElectronico\Enums\MeasureUnitType;
 use ComprobanteElectronico\Interfaces\XmlAppendable;
 use ComprobanteElectronico\Data\ItemCode;
+use ComprobanteElectronico\Data\Tax;
 
 /**
  * Invoice item data model.
@@ -32,6 +31,7 @@ class Item extends Model implements XmlAppendable
     protected $properties = [
         'quantity',
         'code',
+        'tax',
         'measureUnitType',
         'taxType',
         'comercialMeasureUnit',
@@ -77,6 +77,8 @@ class Item extends Model implements XmlAppendable
     {
         if ($this->code && !is_a($this->code, ItemCode::class))
             throw new Exception(__i18n('Code must be an instance of class \'ItemCode\'.'));
+        if ($this->tax && !is_a($this->tax, Tax::class))
+            throw new Exception(__i18n('Tax must be an instance of class \'Tax\'.'));
         if (!is_numeric($this->quantity))
             throw new Exception(__i18n('Quantity is not numeric.'));
         if (strlen($this->quantity) > 16)
@@ -101,8 +103,6 @@ class Item extends Model implements XmlAppendable
             throw new Exception(__i18n('Discount should be lower than 9999999999999.99999.'));
         if ($this->discountDescription && strlen($this->discountDescription) > 80)
             throw new Exception(__i18n('Discount description can not have more than 80 characters.'));
-        if ($this->taxType && !TaxType::exists($this->taxType))
-            throw new Exception(sprintf(__i18n('Unknown tax type \'%s\'.'), $this->taxType));
         if ($this->measureUnitType && !MeasureUnitType::exists($this->measureUnitType))
             throw new Exception(sprintf(__i18n('Unknown measure unit type \'%s\'.'), $this->measureUnitType));
         return true;
@@ -146,8 +146,8 @@ class Item extends Model implements XmlAppendable
         if ($this->subtotal)
             $xml->addChild('SubTotal', $this->subtotal);
         // Impuesto
-        if ($this->taxType)
-            $xml->addChild('Impuesto', $this->taxType);
+        if ($this->tax)
+            $this->tax->appendXml('Impuesto', $xml);
         // Total
         $xml->addChild('MontoTotalLinea', $this->total);
     }

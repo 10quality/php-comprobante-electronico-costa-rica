@@ -325,7 +325,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
      * @since 1.0.0
      *
      * @expectedException        Exception
-     * @expectedExceptionMessage Unknown tax type 'FRE'.
+     * @expectedExceptionMessage Tax must be an instance of class 'Tax'.
      */
     public function testInvalidTaxException()
     {
@@ -338,7 +338,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $item->totalPrice = 11.98;
         $item->total = 10.98;
         $item->discount = 1.00;
-        $item->taxType = 'FRE';
+        $item->tax = 'FRE';
         // Assert
         $item->isValid();
     }
@@ -397,7 +397,6 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($xml, '<MontoDescuento>1</MontoDescuento>') !== false);
         $this->assertTrue(strpos($xml, '<NaturalezaDescuento>Promocion</NaturalezaDescuento>') !== false);
         $this->assertTrue(strpos($xml, '<SubTotal>9</SubTotal>') !== false);
-        $this->assertTrue(strpos($xml, '<Impuesto>01</Impuesto>') !== false);
         $this->assertTrue(strpos($xml, '<MontoTotalLinea>10.17</MontoTotalLinea>') !== false);
     }
 }
