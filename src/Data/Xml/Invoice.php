@@ -4,6 +4,7 @@ namespace ComprobanteElectronico\Data\Xml;
 
 use Exception;
 use ComprobanteElectronico\Data\Reference;
+use ComprobanteElectronico\Data\Normative;
 use ComprobanteElectronico\Abstracts\Xml as Model;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
@@ -80,6 +81,7 @@ class Invoice extends Model
         'total',
         'items',
         'reference',
+        'normative',
     ];
     /**
      * Returns flag indicating if model is valid for casting.
@@ -153,6 +155,10 @@ class Invoice extends Model
             throw new Exception('Total in taxes should be lower than 9999999999999.99999.');
         if ($this->reference && !is_a($this->reference, Reference::class))
             throw new Exception(__i18n('Reference must be an instance of class \'Reference\'.'));
+        if ($this->normative === null || strlen($this->normative) === 0)
+            throw new Exception('Normative is missing.');
+        if ($this->normative && !is_a($this->normative, Normative::class))
+            throw new Exception(__i18n('Normative must be an instance of class \'Normative\'.'));
         return parent::isValid();
     }
     /**
@@ -238,6 +244,8 @@ class Invoice extends Model
         }
         if ($this->reference)
             $this->reference->appendXml('InformacionReferencia', $xml);
+        // Normative
+        $this->normative->appendXml('Normativa', $xml);
         return $xml;
     }
 }

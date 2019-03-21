@@ -3,6 +3,7 @@
 use ComprobanteElectronico\Data\Xml\Invoice;
 use ComprobanteElectronico\Data\Item;
 use ComprobanteElectronico\Data\Entity;
+use ComprobanteElectronico\Data\Normative;
 use ComprobanteElectronico\Enums\EntityType;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
@@ -598,6 +599,7 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
         $invoice->currency = 'USD';
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
+        $invoice->normative = new Normative;
         $invoice->add(new Item);
         // Assert
         $invoice->isValid();

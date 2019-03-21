@@ -1,6 +1,7 @@
 <?php
 
 use ComprobanteElectronico\Data\Xml\Invoice;
+use ComprobanteElectronico\Data\Normative;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
 
@@ -42,6 +43,7 @@ class InvoiceXmlTest extends PHPUnit_Framework_TestCase
         $invoice->saleType = SaleType::CASH;
         $invoice->paymentType = PaymentType::CASH;
         $invoice->currency = 'USD';
+        $invoice->normative = new Normative(['number' => 123, 'date' => time()]);
         // Exec
         $xml = $invoice->toXml();
         // Assert
