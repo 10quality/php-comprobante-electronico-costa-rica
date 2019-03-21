@@ -66,7 +66,6 @@ class Address extends Model implements XmlAppendable
     {
         $this->isValid();
         $xmlChild = $xml->addChild($element);
-        // Name
         $xmlChild->addChild('Provincia', $this->province);
         $xmlChild->addChild('Canton', $this->canton);
         $xmlChild->addChild('Distrito', $this->district);

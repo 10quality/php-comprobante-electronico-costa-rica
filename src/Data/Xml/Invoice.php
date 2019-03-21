@@ -3,6 +3,7 @@
 namespace ComprobanteElectronico\Data\Xml;
 
 use Exception;
+use ComprobanteElectronico\Data\Reference;
 use ComprobanteElectronico\Abstracts\Xml as Model;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
@@ -78,6 +79,7 @@ class Invoice extends Model
         'totalTaxes',
         'total',
         'items',
+        'reference',
     ];
     /**
      * Returns flag indicating if model is valid for casting.
@@ -149,6 +151,8 @@ class Invoice extends Model
             throw new Exception('Total in taxes is not numeric.');
         if ($this->totalTaxes && $this->totalTaxes > 9999999999999.99999)
             throw new Exception('Total in taxes should be lower than 9999999999999.99999.');
+        if ($this->reference && !is_a($this->reference, Reference::class))
+            throw new Exception(__i18n('Reference must be an instance of class \'Reference\'.'));
         return parent::isValid();
     }
     /**
@@ -232,6 +236,8 @@ class Invoice extends Model
             if ($this->total)
                 $xmlChild = $xmlSummary->addChild('TotalComprobante', $this->total);
         }
+        if ($this->reference)
+            $this->reference->appendXml('InformacionReferencia', $xml);
         return $xml;
     }
 }

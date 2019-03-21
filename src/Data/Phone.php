@@ -57,7 +57,6 @@ class Phone extends Model implements XmlAppendable
     {
         $this->isValid();
         $xmlChild = $xml->addChild($element);
-        // Name
         $xmlChild->addChild('CodigoPais', $this->country);
         $xmlChild->addChild('NumTelefono', $this->number);
     }
