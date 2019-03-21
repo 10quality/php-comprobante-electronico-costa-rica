@@ -71,15 +71,15 @@ class Exoneration extends Model implements XmlAppendable
     public function appendXml($element, &$xml)
     {
         $this->isValid();
-        $xmlAddress = $xml->addChild($element);
-        $xmlAddress->addChild('TipoDocumento', $this->type);
-        $xmlAddress->addChild('NumeroDocumento', $this->number);
-        $xmlAddress->addChild(
+        $xmlChild = $xml->addChild($element);
+        $xmlChild->addChild('TipoDocumento', $this->type);
+        $xmlChild->addChild('NumeroDocumento', $this->number);
+        $xmlChild->addChild(
             'NombreInstitucion',
             strlen($this->entityName) > 70 ? substr($this->entityName, 0, 70) : $this->entityName
         );
-        $xmlAddress->addChild('FechaEmision', __cecrDate($this->date));
-        $xmlAddress->addChild('MontoImpuesto', $this->amount);
-        $xmlAddress->addChild('PorcentajeCompra', $this->percentage);
+        $xmlChild->addChild('FechaEmision', __cecrDate($this->date));
+        $xmlChild->addChild('MontoImpuesto', $this->amount);
+        $xmlChild->addChild('PorcentajeCompra', $this->percentage);
     }
 }

@@ -57,9 +57,9 @@ class ItemCode extends Model implements XmlAppendable
     public function appendXml($element, &$xml)
     {
         $this->isValid();
-        $xmlAddress = $xml->addChild($element);
+        $xmlChild = $xml->addChild($element);
         // Name
-        $xmlAddress->addChild('Tipo', $this->type);
-        $xmlAddress->addChild('Codigo', $this->code);
+        $xmlChild->addChild('Tipo', $this->type);
+        $xmlChild->addChild('Codigo', $this->code);
     }
 }

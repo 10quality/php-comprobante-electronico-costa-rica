@@ -65,15 +65,15 @@ class Address extends Model implements XmlAppendable
     public function appendXml($element, &$xml)
     {
         $this->isValid();
-        $xmlAddress = $xml->addChild($element);
+        $xmlChild = $xml->addChild($element);
         // Name
-        $xmlAddress->addChild('Provincia', $this->province);
-        $xmlAddress->addChild('Canton', $this->canton);
-        $xmlAddress->addChild('Distrito', $this->district);
+        $xmlChild->addChild('Provincia', $this->province);
+        $xmlChild->addChild('Canton', $this->canton);
+        $xmlChild->addChild('Distrito', $this->district);
         if ($this->neighborhood)
-            $xmlAddress->addChild('Barrio', $this->neighborhood);
+            $xmlChild->addChild('Barrio', $this->neighborhood);
         if ($this->other)
-            $xmlAddress->addChild(
+            $xmlChild->addChild(
                 'OtrasSenas',
                 strlen($this->other) > 160 ? substr($this->other, 0, 160) : $this->other
             );
