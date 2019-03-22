@@ -15,9 +15,12 @@ Contenido:
 
 ## Alcance
 
-Lo que se espera para version 1:
-
 * Generación de archivos XML (Estructura version 4.2).
+    * Factura electrónica
+    * Mensaje de respuesta (receptor)
+    * Nota de débito
+    * Nota de crédito
+* Encriptacion de archivo XML
 * Envío a hacienda.
 
 ## Documentación
