@@ -20,6 +20,7 @@ Contenido:
     * Mensaje de respuesta (receptor)
     * Nota de débito
     * Nota de crédito
+    * Tiquete electrónico
 * Encriptacion de archivo XML
 * Envío a hacienda.
 
