@@ -5,10 +5,11 @@ namespace ComprobanteElectronico\Abstracts;
 use Exception;
 use SimpleXMLElement;
 use TenQuality\Data\Model;
-use ComprobanteElectronico\Interfaces\XmlCastable;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
-use ComprobanteElectronico\Traits\XmlWithItemsTrait;
+use ComprobanteElectronico\Traits\DocTrait;
+use ComprobanteElectronico\Interfaces\XmlCastable;
+use ComprobanteElectronico\Interfaces\DocHandlable;
 
 /**
  * Invoice XML model.
@@ -20,8 +21,9 @@ use ComprobanteElectronico\Traits\XmlWithItemsTrait;
  * @package ComprobanteElectronico
  * @version 1.0.0
  */
-abstract class Xml extends Model implements XmlCastable
+abstract class Xml extends Model implements XmlCastable, DocHandlable
 {
+    use DocTrait;
     /**
      * Indicates the root element.
      * @since 1.0.0

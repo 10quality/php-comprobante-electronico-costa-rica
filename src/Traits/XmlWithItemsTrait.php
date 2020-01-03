@@ -2,6 +2,7 @@
 
 namespace ComprobanteElectronico\Traits;
 
+use Exception;
 use TenQuality\Data\Collection;
 use ComprobanteElectronico\Data\Item;
 
@@ -36,6 +37,8 @@ trait XmlWithItemsTrait
      */
     public function add(Item $item)
     {
+        if (count($this->items) > 1000)
+            throw new Exception(sprintf(__i18n('Cannot add more than %d items.'), 1000));
         $this->items[] = $item;
         return $this;
     }

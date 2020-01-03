@@ -50,7 +50,14 @@ class Invoice extends Model
      * 
      * @var string
      */
-    protected $version = '4.2';
+    protected $version = '4.3';
+    /**
+     * Returns the document type or code used to generate the sequential number.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $doctype = '01';
     /**
      * Model properties.
      * @since 1.0.0
@@ -58,7 +65,9 @@ class Invoice extends Model
      * @var array
      */
     protected $properties = [
+        'activityCode',
         'key',
+        'number',
         'id',
         'date',
         'issuer',
@@ -175,6 +184,8 @@ class Invoice extends Model
     {
         $xml = parent::toXml();
         // Clave
+        $xmlChild = $xml->addChild('CodigoActividad', $this->activityCode);
+        // Clave
         $xmlChild = $xml->addChild('Clave', $this->key);
         // Id
         $xmlChild = $xml->addChild('NumeroConsecutivo', $this->id);
@@ -201,7 +212,7 @@ class Invoice extends Model
                 // Line number
                 $xmlChild = $xmlItemLine->addChild('NumeroLinea', $i + 1);
                 // CodigoType
-                $this->items[$i]->appendXml('item', $xmlItemLine);
+                $this->items[$i]->appendXmlWithArgs('item', $xmlItemLine, ['doctype' => $this->doctype]);
             }
             // Resumen
             $xmlSummary = $xml->addChild('ResumenFactura');

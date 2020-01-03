@@ -119,4 +119,11 @@ class ResponseMessage extends Model
         $xml->addChild('NumeroConsecutivoReceptor', $this->number);
         return $xml;
     }
+    /**
+     * Returns the document type or code used to generate the sequential number.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $doctype = '05';
 }

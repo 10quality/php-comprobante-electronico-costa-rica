@@ -35,6 +35,7 @@ class Entity extends Model implements XmlAppendable
         'address',
         'phone',
         'fax',
+        'foreignerOtherAddress',
     ];
     /**
      * Returns the ID value based on the rawId property.
@@ -136,6 +137,12 @@ class Entity extends Model implements XmlAppendable
         // Address
         if ($this->address)
             $this->address->appendXml('Ubicacion', $xmlEntity);
+        // Other foreigner address notes
+        if ($this->foreignerOtherAddress)
+            $xmlEntity->addChild(
+                'OtrasSenasExtranjero',
+                strlen($this->foreignerOtherAddress) > 300 ? substr($this->foreignerOtherAddress, 0, 300) : $this->foreignerOtherAddress
+            );
         // Phone
         if ($this->phone)
             $this->phone->appendXml('Telefono', $xmlEntity);

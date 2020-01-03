@@ -15,7 +15,7 @@ Contenido:
 
 ## Alcance
 
-* Generación de archivos XML (Estructura version 4.2).
+* Generación de archivos XML (Estructura version 4.3).
     * Factura electrónica
     * Mensaje de respuesta (receptor)
     * Nota de débito
@@ -36,10 +36,16 @@ Ver la [wiki](https://github.com/10quality/php-comprobante-electronico-costa-ric
 
 ## Enlaces
 
+Lista de enlaces a la documentación proporcionada por hacienda:
+
 * Guia [Comprobante electrónico](http://www.hacienda.go.cr/docs/5a6f9e6abb19f_Guia%20Comprobantes%20Electronicos.pdf).
 * [Documentación oficial](http://www.hacienda.go.cr/contenido/14350-factura-electronica) del Hacienda.
-* [Documentación programación](https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.1/comprobantes-electronicos-api.html).
+* [Documentación programación](https://tribunet.hacienda.go.cr/docs/esquemas/2016/v4.2/comprobantes-electronicos-api.html).
 * [Estructura XML](https://tribunet.hacienda.go.cr/FormatosYEstructurasXML.jsp)
+
+### Registro de cambios
+
+* [v4.3](https://www.hacienda.go.cr/ATV/ComprobanteElectronico/docs/esquemas/2016/v4.3/ANEXOS%20Y%20ESTRUCTURAS_V4.3.pdf)
 
 ## Desarrollo y contribución
 

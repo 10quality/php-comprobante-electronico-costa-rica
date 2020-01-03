@@ -44,4 +44,11 @@ class Ticket extends Model
      * @var string
      */
     protected $version = '4.2';
+    /**
+     * Returns the document type or code used to generate the sequential number.
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $doctype = '04';
 }

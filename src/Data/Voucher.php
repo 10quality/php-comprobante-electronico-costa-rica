@@ -3,8 +3,8 @@
 namespace ComprobanteElectronico\Data;
 
 use Exception;
-use SimpleXMLElement;
 use TenQuality\Data\Model;
+use ComprobanteElectronico\Interfaces\XmlCastable;
 
 /**
  * AccessToken data model.
@@ -35,9 +35,13 @@ class Voucher extends Model
      * @var array
      */
     protected $properties = [
+        'key',
         'time',
         'issuer',
         'receiver',
+        'document',
+        'situation',
+        'securityCode',
         'hasEncryption',
     ];
     /**
@@ -53,6 +57,28 @@ class Voucher extends Model
         $this->encryptionKeyFilename = $encryptionKeyFilename;
         $this->encryptionPin = $encryptionPin;
         parent::__construct($attributes);
+    }
+    /**
+     * Returns generated key.
+     * @since 1.0.0
+     * 
+     * @return string
+     */
+    protected function getKeyAlias()
+    {
+        if (!$this->isValid())
+            return null;
+        return sprintf(
+            '%s%s%s%s%s%s%d%s',
+            str_pad($this->countryCode ? $this->countryCode : 506, 3, '0', STR_PAD_LEFT),
+            str_pad(date('d'), 2, '0', STR_PAD_LEFT),
+            str_pad(date('m'), 2, '0', STR_PAD_LEFT),
+            str_pad(date('y'), 2, '0', STR_PAD_LEFT),
+            str_pad($this->issuer->id, 12, '0', STR_PAD_LEFT),
+            str_pad($this->document->number, 20, '0', STR_PAD_LEFT),
+            isset($this->situation) ? $this->situation : 1,
+            str_pad(substr($this->securityCode, 0, 8), 8, '0', STR_PAD_LEFT)
+        );
     }
     /**
      * Returns flag indicating if model has encryption enabled or not.
@@ -76,14 +102,14 @@ class Voucher extends Model
      */
     protected function getEncryptedXmlAlias()
     {
-        if ($this->hasEncryption && $this->xml) {
-            if (!is_a($this->xml, SimpleXMLElement::class))
-                throw new Exception(__i18n('Xml must be an instance of class SimpleXMLElement.'));
+        if ($this->hasEncryption && $this->document) {
+            if (!$this->document instanceof XmlCastable)
+                throw new Exception(__i18n('Document must implement \'XmlCastable\'.'));
             $p12cert = [];
             $file = file_get_contents($this->encryptionKeyFilename);
             $crypted = null;
             if (openssl_pkcs12_read($file, $p12cert, $this->encryptionPin)
-                && openssl_public_encrypt($this->xml->asXML(), $crypted, $p12cert['cert'])
+                && openssl_public_encrypt($this->document->toXml()->asXML(), $crypted, $p12cert['cert'])
             ) {
                 return $crypted;
             } else {
@@ -123,6 +149,24 @@ class Voucher extends Model
         }
     }
     /**
+     * Checks if model is valid or not.
+     * @since 1.0.0
+     * 
+     * @return bool
+     */
+    public function isValid()
+    {
+        if ($this->issuer === null)
+            throw new Exception(__i18n('Issuer is missing.'));
+        if (!is_a($this->issuer, Entity::class))
+            throw new Exception(__i18n('Issuer must be an instance of class Entity.'));
+        if ($this->document === null)
+            throw new Exception(__i18n('Document is missing.'));
+        if (!$this->document instanceof XmlCastable)
+            throw new Exception(__i18n('Document must implement \'XmlCastable\'.'));
+        return true;
+    }
+    /**
      * Returns a valid array for reception.
      * @since 1.0.0
      *
@@ -131,27 +175,18 @@ class Voucher extends Model
     public function toReceptionArray()
     {
         // Validations
-        if ($this->issuer === null)
-            throw new Exception(__i18n('Issuer is missing.'));
-        if (!is_a($this->issuer, Entity::class))
-            throw new Exception(__i18n('Issuer must be an instance of class Entity.'));
-        if ($this->xml === null)
-            throw new Exception(__i18n('XML string is missing.'));
-        if (!is_a($this->xml, SimpleXMLElement::class))
-            throw new Exception(__i18n('Xml must be an instance of class SimpleXMLElement.'));
-        if ($this->key === null)
-            throw new Exception(__i18n('Key is missing.'));
-        if (strlen($this->key) > 50)
-            throw new Exception(__i18n('Key is greater than 50 characters.'));
+        $this->isValid();
         // Prepare output
         if ($this->time === null)
             $this->time = time();
-        $xml = $this->hasEncryption ? $this->encryptedXml : $this->xml;
+        $this->document->key = $this->key;
         $output = [
             'clave'             => $this->key,
             'fecha'             => __cecrDate($this->time),
             'emisor'            => $this->issuer->toReceptionArray(),
-            'comprobanteXml'    => $this->hasEncryption ? $this->encryptedXml : $this->xml->asXML(),
+            'comprobanteXml'    => $this->hasEncryption
+                                    ? $this->encryptedXml
+                                    : $this->document->toXml()->asXML(),
         ];
         // Add optional properties
         if ($this->receiver !== null && is_a($this->receiver, Entity::class))

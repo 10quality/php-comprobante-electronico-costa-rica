@@ -4,6 +4,7 @@ namespace ComprobanteElectronico\Data;
 
 use Exception;
 use TenQuality\Data\Model;
+use ComprobanteElectronico\Enums\TaxType;
 use ComprobanteElectronico\Enums\MeasureUnitType;
 use ComprobanteElectronico\Interfaces\XmlAppendable;
 use ComprobanteElectronico\Data\ItemCode;
@@ -32,8 +33,9 @@ class Item extends Model implements XmlAppendable
         'quantity',
         'code',
         'tax',
+        'taxableBase',
+        'netTax',
         'measureUnitType',
-        'taxType',
         'comercialMeasureUnit',
         'description',
         'price',
@@ -42,6 +44,7 @@ class Item extends Model implements XmlAppendable
         'discountDescription',
         'subtotal',
         'total',
+        'tariff',
     ];
     /**
      * Returns the ID value based on the rawId property.
@@ -52,7 +55,7 @@ class Item extends Model implements XmlAppendable
     protected function getDetailsAlias()
     {
         return $this->description
-            ? (strlen($this->description) > 160 ? trim(substr($this->description, 0, 157)).'...' : $this->description)
+            ? (strlen($this->description) > 200 ? trim(substr($this->description, 0, 197)).'...' : $this->description)
             : null;
     }
     /**
@@ -81,8 +84,8 @@ class Item extends Model implements XmlAppendable
             throw new Exception(__i18n('Tax must be an instance of class \'Tax\'.'));
         if (!is_numeric($this->quantity))
             throw new Exception(__i18n('Quantity is not numeric.'));
-        if (strlen($this->quantity) > 16)
-            throw new Exception(__i18n('Quantity can not have more than 16 digits.'));
+        if (strlen($this->quantity) > 17)
+            throw new Exception(__i18n('Quantity can not have more than 17 digits.'));
         if (strlen($this->comercialMeasureUnit) > 20)
             throw new Exception(__i18n('Commercial measurement unit cannot have more than 20 characters.'));
         if (!is_numeric($this->price))
@@ -97,14 +100,16 @@ class Item extends Model implements XmlAppendable
             throw new Exception(__i18n('Total is not numeric.'));
         if ($this->total > 9999999999999.99999)
             throw new Exception(__i18n('Total should be lower than 9999999999999.99999.'));
-        if ($this->discount && !is_numeric($this->discount))
-            throw new Exception(__i18n('Discount is not numeric.'));
-        if ($this->discount && $this->discount > 9999999999999.99999)
-            throw new Exception(__i18n('Discount should be lower than 9999999999999.99999.'));
-        if ($this->discountDescription && strlen($this->discountDescription) > 80)
-            throw new Exception(__i18n('Discount description can not have more than 80 characters.'));
         if ($this->measureUnitType && !MeasureUnitType::exists($this->measureUnitType))
             throw new Exception(sprintf(__i18n('Unknown measure unit type \'%s\'.'), $this->measureUnitType));
+        if ($this->tariff && strlen($this->tariff) > 12)
+            throw new Exception(__i18n('Tariff can not have more than 12 characters.'));
+        if ($this->discount && !is_a($this->discount, Discount::class))
+            throw new Exception(__i18n('Exoneration must be an instance of class \'Exoneration\'.'));
+        if (!is_numeric($this->netTax))
+            throw new Exception(__i18n('Net tax is not numeric.'));
+        if ($this->netTax && $this->netTax > 9999999999999.99999)
+            throw new Exception(__i18n('Net tax should be lower than 9999999999999.99999.'));
         return true;
     }
     /**
@@ -123,7 +128,7 @@ class Item extends Model implements XmlAppendable
         if ($this->code)
             $this->code->appendXml('Codigo', $xml);
         // Cantidad
-        $xml->addChild('Cantidad', $this->quantity);
+        $xml->addChild('Cantidad', number_format($this->quantity, 3, '.', ''));
         // UnidadMedida
         $xml->addChild('UnidadMedida', $this->measureUnitType);
         // UnidadMedidaComercial
@@ -133,22 +138,42 @@ class Item extends Model implements XmlAppendable
         if ($this->description)
             $xml->addChild('Detalle', $this->details);
         // PrecioUnitario
-        $xml->addChild('PrecioUnitario', $this->price);
+        $xml->addChild('PrecioUnitario', number_format($this->price, 5, '.', ''));
         // MontoTotal
-        $xml->addChild('MontoTotal', $this->totalPrice);
+        $xml->addChild('MontoTotal', number_format($this->totalPrice, 5, '.', ''));
         // MontoDescuento
         if ($this->discount)
-            $xml->addChild('MontoDescuento', $this->discount);
-        // NaturalezaDescuento
-        if ($this->discountDescription)
-            $xml->addChild('NaturalezaDescuento', $this->discountDescription);
+            $this->discount->appendXml('Descuento', $xml);
         // SubTotal
         if ($this->subtotal)
-            $xml->addChild('SubTotal', $this->subtotal);
+            $xml->addChild('SubTotal', number_format($this->subtotal, 5, '.', ''));
         // Impuesto
         if ($this->tax)
             $this->tax->appendXml('Impuesto', $xml);
+        if ($this->tax && $this->tax->type === TaxType::SERVICES)
+            $xml->addChild('BaseImponible', number_format($this->taxableBase, 5, '.', ''));
+        if ($this->netTax)
+            $xml->addChild('ImpuestoNeto', number_format($this->netTax, 5, '.', ''));
         // Total
         $xml->addChild('MontoTotalLinea', $this->total);
+    }
+    /**
+     * Appends their data to an xml structure.
+     * @since 1.0.0
+     * 
+     * @param string            $element Element to append as.
+     * @param \SimpleXMLElement &$xml    XML structure to append to.
+     * @param arrat             $args    Additional arguments.
+     */
+    public function appendXmlWithArgs($element, &$xml, $args)
+    {
+        // Required field for Export invoice.
+        if (array_key_exists('doctype', $args)
+            && $args['doctype'] === '09'
+            && $this->tariff
+        )
+            $this->tax->appendXml('PartidaArancelaria', $this->tariff);
+
+        $this->appendXml($element, $xml);
     }
 }
