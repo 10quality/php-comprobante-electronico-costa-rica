@@ -40,19 +40,19 @@ class Address extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->province === null || strlen($this->province) === 0)
-            throw new Exception(__i18n('Province is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Province code')));
         if (!preg_match('/^[0-9]$/', $this->province))
-            throw new Exception(__i18n('Province code must contain 1 digit.'));
+            throw new Exception(sprintf(__i18n('%s must contain %d digit.'), __i18n('Province code'), 1));
         if ($this->canton === null || strlen($this->canton) === 0)
-            throw new Exception(__i18n('Canton is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Canton'));
         if (!preg_match('/^[0-9][0-9]$/', $this->canton))
-            throw new Exception(__i18n('Canton code must contain 2 digits.'));
+            throw new Exception(sprintf(__i18n('%s must contain %d digits.'), __i18n('Canton'), 2));
         if ($this->district === null || strlen($this->district) === 0)
-            throw new Exception(__i18n('District is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('District'));
         if (!preg_match('/^[0-9][0-9]$/', $this->district))
-            throw new Exception(__i18n('District code must contain 2 digits.'));
+            throw new Exception(sprintf(__i18n('%s must contain %d digits.'), __i18n('District'), 2));
         if ($this->neighborhood !== null && !preg_match('/^[0-9][0-9]$/', $this->neighborhood))
-            throw new Exception(__i18n('Neighborhood code must contain 2 digits.'));
+            throw new Exception(sprintf(__i18n('%s must contain %d digits.'), __i18n('Neighborhood code'), 2));
         return true;
     }
     /**

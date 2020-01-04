@@ -37,11 +37,11 @@ class Discount extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->amount && !is_numeric($this->amount))
-            throw new Exception(__i18n('Discount is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Amount')));
         if ($this->amount && $this->amount > 9999999999999.99999)
-            throw new Exception(__i18n('Discount should be lower than 9999999999999.99999.'));
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Amount'), 9999999999999.99999));
         if ($this->description && strlen($this->description) > 80)
-            throw new Exception(__i18n('Discount description can not have more than 80 characters.'));
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Description'), 80));
         return true;
     }
     /**

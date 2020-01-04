@@ -43,15 +43,15 @@ class Reference extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->number === null || strlen($this->number) === 0)
-            throw new Exception(__i18n('Number is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Number')));
         if ($this->reason === null || strlen($this->reason) === 0)
-            throw new Exception(__i18n('Reason is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Reason')));
         if ($this->date === null || strlen($this->date) === 0)
-            throw new Exception(__i18n('Date is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Date')));
         if (!DocType::exists($this->type))
-            throw new Exception(sprintf(__i18n('Unknown doc type \'%s\'.'), $this->type));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         if (!ReferenceCode::exists($this->code))
-            throw new Exception(sprintf(__i18n('Unknown reference code \'%s\'.'), $this->code));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Code'), $this->code));
         return true;
     }
     /**

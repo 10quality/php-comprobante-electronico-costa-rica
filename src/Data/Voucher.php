@@ -104,7 +104,7 @@ class Voucher extends Model
     {
         if ($this->hasEncryption && $this->document) {
             if (!$this->document instanceof XmlCastable)
-                throw new Exception(__i18n('Document must implement \'XmlCastable\'.'));
+                throw new Exception(sprintf(__i18n('%s must implement \'%s\'.'), __i18n('Document'), XmlCastable::class));
             $p12cert = [];
             $file = file_get_contents($this->encryptionKeyFilename);
             $crypted = null;
@@ -136,13 +136,13 @@ class Voucher extends Model
         // Add entity
         if (is_object($typeOrModel)) {
             if (!is_a($typeOrModel, Entity::class))
-                throw new Exception(sprintf(__i18n('Expecting object parameter to be an instance of \'%s\'.'), Entity::class));
+                throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Parameter'), Entity::class));
             $this->$entity = $typeOrModel;
         } else {
             if ($typeOrModel === null || strlen($typeOrModel) === 0)
-                throw new Exception(__i18n('Entity\'s type is missing.'));
+                throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Entity\'s type')));
             if ($id === null || strlen($id) === 0)
-                throw new Exception(__i18n('Entity\'s ID is missing.'));
+                throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Entity\'s ID')));
             $this->$entity = new Entity;
             $this->$entity->type = $typeOrModel;
             $this->$entity->id = $id;
@@ -157,13 +157,15 @@ class Voucher extends Model
     public function isValid()
     {
         if ($this->issuer === null)
-            throw new Exception(__i18n('Issuer is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Issuer')));
         if (!is_a($this->issuer, Entity::class))
-            throw new Exception(__i18n('Issuer must be an instance of class Entity.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Issuer'), Entity::class));
+        if ($this->receiver && !is_a($this->receiver, Entity::class))
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Receiver'), Entity::class));
         if ($this->document === null)
-            throw new Exception(__i18n('Document is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Document')));
         if (!$this->document instanceof XmlCastable)
-            throw new Exception(__i18n('Document must implement \'XmlCastable\'.'));
+            throw new Exception(sprintf(__i18n('%s must implement \'%s\'.'), __i18n('Document'), XmlCastable::class));
         return true;
     }
     /**

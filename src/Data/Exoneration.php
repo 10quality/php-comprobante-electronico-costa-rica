@@ -42,23 +42,23 @@ class Exoneration extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->type === null || strlen($this->type) === 0)
-            throw new Exception(__i18n('Type is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Type')));
         if ($this->number === null || strlen($this->number) === 0)
-            throw new Exception(__i18n('Number is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Number')));
         if ($this->entityName === null || strlen($this->entityName) === 0)
-            throw new Exception(__i18n('Name is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Entity name')));
         if ($this->date === null || strlen($this->date) === 0)
-            throw new Exception(__i18n('Date is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Date')));
         if (!is_numeric($this->amount))
-            throw new Exception(__i18n('Amount is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Amount')));
         if ($this->amount > 9999999999999.99999)
-            throw new Exception(__i18n('Amount should be lower than 9999999999999.99999.'));
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Amount'), 9999999999999.99999));
         if (!is_integer($this->percentage))
-            throw new Exception(__i18n('Percentage is not an integer.'));
+            throw new Exception(sprintf(__i18n('%s is not an integer.'), __i18n('Percentage')));
         if (strlen($this->percentage) > 3)
-            throw new Exception(__i18n('Percentage can not have more than 3 digits.'));
+            throw new Exception(sprintf(__i18n('%s can not have more than %d digits.'), __i18n('Percentage'), 3));
         if ($this->type && !ExonerationType::exists($this->type))
-            throw new Exception(sprintf(__i18n('Unknown exoneration type \'%s\'.'), $this->type));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         return true;
     }
     /**

@@ -40,7 +40,7 @@ trait DocTrait
     public function getType()
     {
         if (!isset($this->doctype) || !empty($this->doctype))
-            throw new Exception('No doc type set.');
+            throw new Exception(__i18n('No doc type set.'));
         return $this->doctype;
     }
 }

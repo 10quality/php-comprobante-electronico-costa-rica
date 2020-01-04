@@ -79,37 +79,37 @@ class Item extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->code && !is_a($this->code, ItemCode::class))
-            throw new Exception(__i18n('Code must be an instance of class \'ItemCode\'.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Code'), ItemCode::class));
         if ($this->tax && !is_a($this->tax, Tax::class))
-            throw new Exception(__i18n('Tax must be an instance of class \'Tax\'.'));
-        if (!is_numeric($this->quantity))
-            throw new Exception(__i18n('Quantity is not numeric.'));
-        if (strlen($this->quantity) > 17)
-            throw new Exception(__i18n('Quantity can not have more than 17 digits.'));
-        if (strlen($this->comercialMeasureUnit) > 20)
-            throw new Exception(__i18n('Commercial measurement unit cannot have more than 20 characters.'));
-        if (!is_numeric($this->price))
-            throw new Exception(__i18n('Price is not numeric.'));
-        if ($this->price > 9999999999999.99999)
-            throw new Exception(__i18n('Price should be lower than 9999999999999.99999.'));
-        if (!is_numeric($this->totalPrice))
-            throw new Exception(__i18n('Total price is not numeric.'));
-        if ($this->totalPrice > 9999999999999.99999)
-            throw new Exception(__i18n('Total price should be lower than 9999999999999.99999.'));
-        if (!is_numeric($this->total))
-            throw new Exception(__i18n('Total is not numeric.'));
-        if ($this->total > 9999999999999.99999)
-            throw new Exception(__i18n('Total should be lower than 9999999999999.99999.'));
-        if ($this->measureUnitType && !MeasureUnitType::exists($this->measureUnitType))
-            throw new Exception(sprintf(__i18n('Unknown measure unit type \'%s\'.'), $this->measureUnitType));
-        if ($this->tariff && strlen($this->tariff) > 12)
-            throw new Exception(__i18n('Tariff can not have more than 12 characters.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Tax'), Tax::class));
         if ($this->discount && !is_a($this->discount, Discount::class))
-            throw new Exception(__i18n('Exoneration must be an instance of class \'Exoneration\'.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Discount'), Discount::class));
+        if (!is_numeric($this->quantity))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Quantity')));
+        if (strlen($this->quantity) > 17)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d digits.'), __i18n('Quantity'), 17));
+        if (strlen($this->comercialMeasureUnit) > 20)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Commercial measurement unit'), 20));
+        if (!is_numeric($this->price))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Price')));
+        if ($this->price > 9999999999999.99999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Price'), 9999999999999.99999));
+        if (!is_numeric($this->totalPrice))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Total price')));
+        if ($this->totalPrice > 9999999999999.99999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Total price'), 9999999999999.99999));
+        if (!is_numeric($this->total))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Total')));
+        if ($this->total > 9999999999999.99999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Total'), 9999999999999.99999));
+        if ($this->measureUnitType && !MeasureUnitType::exists($this->measureUnitType))
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Measure unit type'), $this->measureUnitType));
+        if ($this->tariff && strlen($this->tariff) > 12)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Tariff'), 12));
         if (!is_numeric($this->netTax))
-            throw new Exception(__i18n('Net tax is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Net tax')));
         if ($this->netTax && $this->netTax > 9999999999999.99999)
-            throw new Exception(__i18n('Net tax should be lower than 9999999999999.99999.'));
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Net tax'), 9999999999999.99999));
         return true;
     }
     /**

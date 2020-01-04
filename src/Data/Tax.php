@@ -45,27 +45,27 @@ class Tax extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->type === null || strlen($this->type) === 0)
-            throw new Exception(__i18n('Type is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Type')));
         if (!is_numeric($this->rate))
-            throw new Exception(__i18n('Rate is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Rate')));
         if (!is_numeric($this->amount))
-            throw new Exception(__i18n('Amount is not numeric.'));
-        if (!is_numeric($this->exportAmount))
-            throw new Exception(__i18n('Export amount is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Amount')));
         if ($this->amount > 9999999999999.99999)
-            throw new Exception(__i18n('Amount should be lower than 9999999999999.99999.'));
-        if ($this->exportAmount > 9999999999999.99999)
-            throw new Exception(__i18n('Export amount should be lower than 9999999999999.99999.'));
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Amount'), 9999999999999.99999));
+        if ($this->exportAmount && !is_numeric($this->exportAmount))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Export amount')));
+        if ($this->exportAmount && $this->exportAmount > 9999999999999.99999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Export amount'), 9999999999999.99999));
         if ($this->type && !TaxType::exists($this->type))
-            throw new Exception(sprintf(__i18n('Unknown tax type \'%s\'.'), $this->type));
-        if ($this->exoneration && !is_a($this->exoneration, Exoneration::class))
-            throw new Exception(__i18n('Exoneration must be an instance of class \'Exoneration\'.'));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         if ($this->rateType && !TaxRateType::exists($this->rateType))
-            throw new Exception(sprintf(__i18n('Unknown tax rate type \'%s\'.'), $this->rateType));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Rate Type'), $this->rateType));
         if ($this->ivaFactor && !is_numeric($this->ivaFactor))
-            throw new Exception(__i18n('IVA Factor is not numeric.'));
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('IVA Factor')));
         if ($this->ivaFactor && $this->ivaFactor > 9.9999)
-            throw new Exception(__i18n('IVA Factor should be lower than 9.9999.'));
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('IVA Factor'), 9.9999));
+        if ($this->exoneration && !is_a($this->exoneration, Exoneration::class))
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Exoneration'), Exoneration::class));
         return true;
     }
     /**

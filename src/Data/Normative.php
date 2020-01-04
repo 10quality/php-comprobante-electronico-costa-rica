@@ -37,11 +37,11 @@ class Normative extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->number === null || strlen($this->number) === 0)
-            throw new Exception(__i18n('Number is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Number')));
         if ($this->date === null || strlen($this->date) === 0)
-            throw new Exception(__i18n('Date is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Date')));
         if (strlen($this->number) > 13)
-            throw new Exception(__i18n('Number is greater than 13 characters.'));
+            throw new Exception(sprintf(__i18n('%s is greater than %d characters.'), __i18n('Number'), 13));
         return true;
     }
     /**

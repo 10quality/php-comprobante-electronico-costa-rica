@@ -66,13 +66,13 @@ class Entity extends Model implements XmlAppendable
     public function toReceptionArray()
     {
         if ($this->rawId === null || strlen($this->rawId) === 0)
-            throw new Exception(__i18n('ID is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('ID')));
         if ($this->type === null || strlen($this->type) === 0)
-            throw new Exception(__i18n('Type is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Type')));
         if (strlen($this->id) > 12)
-            throw new Exception(__i18n('ID is greater than 12 digits.'));
+            throw new Exception(sprintf(__i18n('%s is greater than %d digits.'), __i18n('ID'), 12));
         if (!EntityType::exists($this->type))
-            throw new Exception(sprintf(__i18n('Unknown entity type \'%s\'.'), $this->type));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         return [
             'tipoIdentificacion'    => $this->type,
             'numeroIdentificacion'  => $this->id,
@@ -85,21 +85,21 @@ class Entity extends Model implements XmlAppendable
     public function isValid()
     {
         if ($this->name === null || strlen($this->name) === 0)
-            throw new Exception(__i18n('Name is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Name')));
         if ($this->rawId === null || strlen($this->rawId) === 0)
-            throw new Exception(__i18n('ID is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('ID')));
         if ($this->type === null || strlen($this->type) === 0)
-            throw new Exception(__i18n('Type is missing.'));
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Type')));
         if (strlen($this->id) > 12)
-            throw new Exception(__i18n('ID is greater than 12 digits.'));
+            throw new Exception(sprintf(__i18n('%s is greater than %d digits.'), __i18n('ID'), 12));
         if (!EntityType::exists($this->type))
-            throw new Exception(sprintf(__i18n('Unknown entity type \'%s\'.'), $this->type));
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         if ($this->address !== null && !is_a($this->address, Address::class))
-            throw new Exception(__i18n('Address must be an instance of class \'Address\'.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Address'), Address::class));
         if ($this->phone !== null && !is_a($this->phone, Phone::class))
-            throw new Exception(__i18n('Phone must be an instance of class \'Phone\'.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Phone'), Phone::class));
         if ($this->fax !== null && !is_a($this->fax, Phone::class))
-            throw new Exception(__i18n('Fax must be an instance of class \'Phone\'.'));
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Fax'), Phone::class));
         return true;
     }
     /**
