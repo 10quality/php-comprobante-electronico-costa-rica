@@ -109,13 +109,13 @@ class Api
     private function validateSettings()
     {
         if ($this->settings->env !== self::ENV_SANDBOX || $this->settings->env !== self::ENV_LIVE)
-            throw new Exception('Invalid environment.');
+            throw new Exception(__i18n('Invalid environment.'));
         if ($this->settings->username === null)
-            throw new Exception('Username not found in settings.');
+            throw new Exception(sprintf(__i18n('%s not found in settings.'), __i18n('Username')));
         if ($this->settings->password === null)
-            throw new Exception('Password not found in settings.');
+            throw new Exception(sprintf(__i18n('%s not found in settings.'), __i18n('Password')));
         if ($this->settings->cypherKeyPath === null)
-            throw new Exception('Cypher key path not found in settings.');
+            throw new Exception(sprintf(__i18n('%s not found in settings.'), __i18n('Cypher key path')));
     }
     /**
      * Requests access token to api.

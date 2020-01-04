@@ -46,7 +46,7 @@ if (! function_exists('__i18n')) {
     function __i18n($string, $args = [])
     {
         return function_exists('L')
-            ? L(mb_strtolower(trim(preg_replace(['/\s/', '/[\.\,\'\"\?\!\:\%\(\)]/'], ['_',''], $string))), $args)
+            ? L(mb_strtolower(trim(preg_replace(['/\s/', '/[\.\,\'\"\?\!\:\%\(\)\\\/]/'], ['_',''], $string))), $args)
             : $string;
     }
 }
