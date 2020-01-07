@@ -93,6 +93,7 @@ class DocType extends Enum
         '06'    => 'Contract',
         '07'    => 'Procedure',
         '08'    => 'Proof issued in contingency',
+        '09'    => 'Proof issued in contingency',
         '99'    => 'Other',
     ];
     /**

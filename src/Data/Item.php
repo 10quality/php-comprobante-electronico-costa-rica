@@ -32,7 +32,8 @@ class Item extends Model implements XmlAppendable
     protected $properties = [
         'quantity',
         'code',
-        'tax',
+        'comercialCode',
+        'taxes',
         'taxableBase',
         'netTax',
         'measureUnitType',
@@ -40,8 +41,7 @@ class Item extends Model implements XmlAppendable
         'description',
         'price',
         'totalPrice',
-        'discount',
-        'discountDescription',
+        'discounts',
         'subtotal',
         'total',
         'tariff',
@@ -69,6 +69,54 @@ class Item extends Model implements XmlAppendable
         $this->description = $value;
     }
     /**
+     * Adds a discount to the item.
+     * @since 1.0.0
+     * 
+     * @param \ComprobanteElectronico\Data\Discount $discount
+     * 
+     * @return ComprobanteElectronico\Data\Item this for chaining.
+     */
+    public function discount(Discount $discount)
+    {
+        if ($this->discounts === null || !is_array($this->discounts))
+            $this->discounts = [];
+        if (count($this->discounts) > 5)
+            throw new Exception(sprintf(__i18n('Cannot add more than %d discounts.'), 5));
+        $this->discounts[] = $discount;
+        return $this;
+    }
+    /**
+     * Adds a tax to the item.
+     * @since 1.0.0
+     * 
+     * @param \ComprobanteElectronico\Data\Tax $tax
+     * 
+     * @return ComprobanteElectronico\Data\Item this for chaining.
+     */
+    public function tax(Tax $tax)
+    {
+        if ($this->taxes === null || !is_array($this->taxes))
+            $this->taxes = [];
+        $this->taxes[] = $tax;
+        return $this;
+    }
+    /**
+     * Returns flag indicating if there is a certain tax type associated with the item.
+     * @since 1.0.0
+     * 
+     * @param string $type
+     * 
+     * @return bool
+     */
+    public function hasTax($type)
+    {
+        for ($i = 0; $i < count($this->taxes); ++$i) {
+            if ($this->taxes[$i]->type === TaxType::SERVICES)
+                return true;
+        }
+        return false;
+    }
+    /**
      * Returns flag indicating if model is valid for casting.
      * @since 1.0.0
      * 
@@ -78,16 +126,14 @@ class Item extends Model implements XmlAppendable
      */
     public function isValid()
     {
-        if ($this->code && !is_a($this->code, ItemCode::class))
-            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Code'), ItemCode::class));
-        if ($this->tax && !is_a($this->tax, Tax::class))
-            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Tax'), Tax::class));
-        if ($this->discount && !is_a($this->discount, Discount::class))
-            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Discount'), Discount::class));
+        if ($this->comercialCode && !is_a($this->comercialCode, ItemCode::class))
+            throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Comercial code'), ItemCode::class));
         if (!is_numeric($this->quantity))
             throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Quantity')));
-        if (strlen($this->quantity) > 17)
-            throw new Exception(sprintf(__i18n('%s can not have more than %d digits.'), __i18n('Quantity'), 17));
+        if ($this->quantity > 9999999999999.999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Quantity'), 9999999999999.999));
+        if (strlen($this->code) > 13)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Code'), 13));
         if (strlen($this->comercialMeasureUnit) > 20)
             throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Commercial measurement unit'), 20));
         if (!is_numeric($this->price))
@@ -110,6 +156,22 @@ class Item extends Model implements XmlAppendable
             throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Net tax')));
         if ($this->netTax && $this->netTax > 9999999999999.99999)
             throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Net tax'), 9999999999999.99999));
+        if ($this->hasTax(TaxType::SERVICES) && ($this->taxableBase === null || strlen($this->taxableBase) === 0))
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Taxable Base')));
+        if ($this->taxableBase && !is_numeric($this->taxableBase))
+            throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Taxable Base')));
+        if ($this->taxableBase && $this->taxableBase > 9999999999999.99999)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Taxable Base'), 9999999999999.99999));
+        if ($this->discounts)
+            for ($i = 0; $i < count($this->discounts); ++$i) {
+                if (!is_a($this->discounts[$i], Discount::class))
+                    throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Discount'), Discount::class));
+            }
+        if ($this->taxes)
+            for ($i = 0; $i < count($this->taxes); ++$i) {
+                if (!is_a($this->taxes[$i], Tax::class))
+                    throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Tax'), Tax::class));
+            }
         return true;
     }
     /**
@@ -126,7 +188,9 @@ class Item extends Model implements XmlAppendable
         // -------------
         // Codigo
         if ($this->code)
-            $this->code->appendXml('Codigo', $xml);
+            $xml->addChild('Codigo', $this->code);
+        if ($this->comercialCode)
+            $this->comercialCode->appendXml('CodigoComercial', $xml);
         // Cantidad
         $xml->addChild('Cantidad', number_format($this->quantity, 3, '.', ''));
         // UnidadMedida
@@ -136,26 +200,33 @@ class Item extends Model implements XmlAppendable
             $xml->addChild('UnidadMedidaComercial', $this->comercialMeasureUnit);
         // Detalle
         if ($this->description)
-            $xml->addChild('Detalle', $this->details);
+            $xml->addChild(
+                'Detalle',
+                strlen($this->details) > 200 ? substr($this->details, 0, 197).'...' : $this->details
+            );
         // PrecioUnitario
         $xml->addChild('PrecioUnitario', number_format($this->price, 5, '.', ''));
         // MontoTotal
         $xml->addChild('MontoTotal', number_format($this->totalPrice, 5, '.', ''));
         // MontoDescuento
-        if ($this->discount)
-            $this->discount->appendXml('Descuento', $xml);
+        if ($this->discounts)
+            foreach ($this->discounts as $discount) {
+                $discount->appendXml('Descuento', $xml);
+            }
         // SubTotal
         if ($this->subtotal)
             $xml->addChild('SubTotal', number_format($this->subtotal, 5, '.', ''));
         // Impuesto
-        if ($this->tax)
-            $this->tax->appendXml('Impuesto', $xml);
-        if ($this->tax && $this->tax->type === TaxType::SERVICES)
+        if ($this->taxes)
+            foreach ($this->taxes as $tax) {
+                $tax->appendXml('Impuesto', $xml);
+            }
+        if ($this->taxableBase)
             $xml->addChild('BaseImponible', number_format($this->taxableBase, 5, '.', ''));
         if ($this->netTax)
             $xml->addChild('ImpuestoNeto', number_format($this->netTax, 5, '.', ''));
         // Total
-        $xml->addChild('MontoTotalLinea', $this->total);
+        $xml->addChild('MontoTotalLinea', number_format($this->total, 5, '.', ''));
     }
     /**
      * Appends their data to an xml structure.

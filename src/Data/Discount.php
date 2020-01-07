@@ -56,6 +56,9 @@ class Discount extends Model implements XmlAppendable
         $this->isValid();
         $xmlChild = $xml->addChild($element);
         $xmlChild->addChild('MontoDescuento', number_format($this->amount, 5, '.', ''));
-        $xmlChild->addChild('NaturalezaDescuento', $this->description);
+        $xmlChild->addChild(
+            'NaturalezaDescuento',
+            strlen($this->description) > 80 ? substr($this->description, 0, 77).'...' : $this->description
+        );
     }
 }

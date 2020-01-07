@@ -74,7 +74,7 @@ class Address extends Model implements XmlAppendable
         if ($this->other)
             $xmlChild->addChild(
                 'OtrasSenas',
-                strlen($this->other) > 160 ? substr($this->other, 0, 160) : $this->other
+                strlen($this->other) > 250 ? substr($this->other, 0, 250) : $this->other
             );
     }
 }

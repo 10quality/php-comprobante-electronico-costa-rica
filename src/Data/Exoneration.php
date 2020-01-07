@@ -59,6 +59,8 @@ class Exoneration extends Model implements XmlAppendable
             throw new Exception(sprintf(__i18n('%s can not have more than %d digits.'), __i18n('Percentage'), 3));
         if ($this->type && !ExonerationType::exists($this->type))
             throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
+        if (strlen($this->number) > 40)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Number'), 40));
         return true;
     }
     /**
@@ -76,10 +78,10 @@ class Exoneration extends Model implements XmlAppendable
         $xmlChild->addChild('NumeroDocumento', $this->number);
         $xmlChild->addChild(
             'NombreInstitucion',
-            strlen($this->entityName) > 70 ? substr($this->entityName, 0, 70) : $this->entityName
+            strlen($this->entityName) > 160 ? substr($this->entityName, 0, 160) : $this->entityName
         );
         $xmlChild->addChild('FechaEmision', __cecrDate($this->date));
-        $xmlChild->addChild('MontoImpuesto', $this->amount);
+        $xmlChild->addChild('MontoImpuesto', number_format($this->amount, 5, '.', ''));
         $xmlChild->addChild('PorcentajeCompra', $this->percentage);
     }
 }

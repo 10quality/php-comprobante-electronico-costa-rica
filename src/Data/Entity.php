@@ -94,6 +94,8 @@ class Entity extends Model implements XmlAppendable
             throw new Exception(sprintf(__i18n('%s is greater than %d digits.'), __i18n('ID'), 12));
         if (!EntityType::exists($this->type))
             throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
+        if ($this->email && strlen($this->email) > 160)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Email'), 160));
         if ($this->address !== null && !is_a($this->address, Address::class))
             throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Address'), Address::class));
         if ($this->phone !== null && !is_a($this->phone, Phone::class))
@@ -114,7 +116,7 @@ class Entity extends Model implements XmlAppendable
         $this->isValid();
         $xmlEntity = $xml->addChild($element);
         // Name
-        $xmlEntity->addChild('Nombre', strlen($this->name) > 80 ? substr($this->name, 0, 80) : $this->name);
+        $xmlEntity->addChild('Nombre', strlen($this->name) > 100 ? substr($this->name, 0, 100) : $this->name);
         // Id
         $xmlId = $xmlEntity->addChild('Identificacion');
         $xmlId->addChild('Tipo', $this->type);

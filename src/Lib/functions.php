@@ -53,15 +53,17 @@ if (! function_exists('__i18n')) {
 
 if (! function_exists('__cecrDate')) {
     /**
-     * Returns time value as valid date format.
+     * Returns date with valid format.
      * @since 1.0.0
      * 
-     * @param {mixed} $time Time value to format to date.
+     * @param {mixed} $time Time or date value value to format to date.
      * 
      * @return string
      */
-    function __cecrDate($time)
+    function __cecrDate($time = null)
     {
+        if ($time === null)
+            $time = time();
         $time = is_string($time) ? strtotime($time) : $time;
         return date('Y-m-d', $time).'T'.date('H:i:s', $time).'Z';
     }

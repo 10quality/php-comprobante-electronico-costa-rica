@@ -9,6 +9,7 @@ use ComprobanteElectronico\Abstracts\Xml as Model;
 use ComprobanteElectronico\Enums\SaleType;
 use ComprobanteElectronico\Enums\PaymentType;
 use ComprobanteElectronico\Traits\XmlWithItemsTrait;
+use ComprobanteElectronico\Traits\XmlWithPaymentsTrait;
 
 /**
  * Invoice XML model.
@@ -22,7 +23,7 @@ use ComprobanteElectronico\Traits\XmlWithItemsTrait;
  */
 class Invoice extends Model
 {
-    use XmlWithItemsTrait;
+    use XmlWithItemsTrait, XmlWithPaymentsTrait;
     /**
      * Indicates the root element.
      * @since 1.0.0
@@ -73,7 +74,7 @@ class Invoice extends Model
         'issuer',
         'receiver',
         'saleType',
-        'paymentType',
+        'paymentTypes',
         'creditTerms',
         'currency',
         'exchangeRate',
@@ -92,6 +93,7 @@ class Invoice extends Model
         'reference',
         'normative',
     ];
+    public function add
     /**
      * Returns flag indicating if model is valid for casting.
      * @since 1.0.0
@@ -104,8 +106,12 @@ class Invoice extends Model
     {
         if ($this->activityCode === null || strlen($this->activityCode) === 0)
             throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Activity code')));
+        if (strlen($this->activityCode) > 6)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Activity code'), 6));
         if ($this->key === null || strlen($this->key) === 0)
             throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Key')));
+        if (strlen($this->key) > 50)
+            throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Key'), 50));
         if ($this->currency === null || strlen($this->currency) === 0)
             throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Currency')));
         if ($this->saleType === null || strlen($this->saleType) === 0)
@@ -118,8 +124,6 @@ class Invoice extends Model
             throw new Exception(sprintf(__i18n('%s is required if %s is \'%s\'.'), __i18n('Credit terms'), __i18n('Sale type'), 'CREDIT'));
         if ($this->saleType === SaleType::CREDIT && strlen($this->creditTerms) > 10)
             throw new Exception(sprintf(__i18n('%s can not have more than %d characters.'), __i18n('Credit terms'), 10));
-        if ($this->paymentType === null || strlen($this->paymentType) === 0)
-            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Payment type')));
         if (!PaymentType::exists($this->paymentType))
             throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Payment type'), $this->paymentType));
         if ($this->exchangeRate && !is_numeric($this->exchangeRate))
@@ -172,6 +176,7 @@ class Invoice extends Model
             throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Normative')));
         if ($this->normative && !is_a($this->normative, Normative::class))
             throw new Exception(sprintf(__i18n('%s must be an instance of class \'%s\'.'), __i18n('Normative'), Normative::class));
+        $this->arePaymentsValid();
         return parent::isValid();
     }
     /**
@@ -205,7 +210,9 @@ class Invoice extends Model
         if ($this->creditTerms)
             $xmlChild = $xml->addChild('PlazoCredito', $this->creditTerms);
         // Payment type
-        $xmlChild = $xml->addChild('MedioPago', $this->paymentType);
+        foreach ($this->paymentTypes as $type) {
+            $xmlChild = $xml->addChild('MedioPago', $type);
+        }
         // Details
         if ($this->items && count($this->items) > 0) {
             $xmlDetails = $xml->addChild('DetalleServicio');

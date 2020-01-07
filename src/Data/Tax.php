@@ -46,8 +46,16 @@ class Tax extends Model implements XmlAppendable
     {
         if ($this->type === null || strlen($this->type) === 0)
             throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Type')));
+        if ($this->type && !TaxType::exists($this->type))
+            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
+        if ($this->rate === null || strlen($this->rate) === 0)
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Rate')));
         if (!is_numeric($this->rate))
             throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Rate')));
+        if ($this->rate > 99.99)
+            throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Rate'), 99.99));
+        if ($this->amount === null || strlen($this->amount) === 0)
+            throw new Exception(sprintf(__i18n('%s is missing.'), __i18n('Amount')));
         if (!is_numeric($this->amount))
             throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Amount')));
         if ($this->amount > 9999999999999.99999)
@@ -56,8 +64,6 @@ class Tax extends Model implements XmlAppendable
             throw new Exception(sprintf(__i18n('%s is not numeric.'), __i18n('Export amount')));
         if ($this->exportAmount && $this->exportAmount > 9999999999999.99999)
             throw new Exception(sprintf(__i18n('%s should be lower than %s.'), __i18n('Export amount'), 9999999999999.99999));
-        if ($this->type && !TaxType::exists($this->type))
-            throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Type'), $this->type));
         if ($this->rateType && !TaxRateType::exists($this->rateType))
             throw new Exception(sprintf(__i18n('%s \'%s\' is unknown.'), __i18n('Rate Type'), $this->rateType));
         if ($this->ivaFactor && !is_numeric($this->ivaFactor))
@@ -80,12 +86,14 @@ class Tax extends Model implements XmlAppendable
         $this->isValid();
         $xmlChild = $xml->addChild($element);
         $xmlChild->addChild('Codigo', $this->type);
-        $xmlChild->addChild('Tarifa', $this->rate);
-        $xmlChild->addChild('Monto', $this->amount);
+        $xmlChild->addChild('Tarifa', number_format($this->rate, 2, '.', ''));
+        $xmlChild->addChild('Monto', number_format($this->amount, 5, '.', ''));
         if ($this->rateType)
             $xmlChild->addChild('CodigoTarifa', $this->rateType);
         if ($this->ivaFactor)
             $xmlChild->addChild('FactorIVA', $this->ivaFactor);
+        if ($this->exportAmount)
+            $xmlChild->addChild('MontoExportacion', number_format($this->exportAmount, 5, '.', ''));
         if ($this->exoneration)
             $this->exoneration->appendXml('Exoneracion', $xmlChild);
     }
